@@ -458,6 +458,31 @@ def thumbs():
     log(f"  埋め込み {len(out)} 件 / {sum(len(v) for v in out.values())/1e6:.2f} MB")
     return out
 
+def thumb_files(dest):
+    """サムネイルを dest/th/ に配置し、key -> 相対パス の辞書を返す。
+    Web版用。HTML に base64 を埋めないぶん劇的に軽くなり、画像はブラウザに
+    キャッシュされる。Artifact 版は外部リクエストが禁じられているので使えない。"""
+    d = os.path.join(dest, "th")
+    os.makedirs(d, exist_ok=True)
+    out, keep = {}, set()
+    for k in TH_URL:
+        i = hashlib.md5(k.encode()).hexdigest()[:16]
+        src = os.path.join(SMALL, i + ".jpg")
+        if not os.path.exists(src): continue
+        name = i + ".jpg"
+        dst = os.path.join(d, name)
+        if not os.path.exists(dst) or os.path.getsize(dst) != os.path.getsize(src):
+            shutil.copyfile(src, dst)
+        keep.add(name); out[k] = "th/" + name
+    # 参照されなくなった画像を掃除する
+    gone = 0
+    for f in os.listdir(d):
+        if f not in keep:
+            os.remove(os.path.join(d, f)); gone += 1
+    log(f"  画像ファイル {len(out)} 件 / {sum(os.path.getsize(os.path.join(d,f)) for f in keep)/1e6:.2f} MB"
+        + (f" / 削除 {gone}" if gone else ""))
+    return out
+
 # ------------------------------------------------------------------ 配色
 def bucket(r, g, b):
     h, s, v = colorsys.rgb_to_hsv(r/255, g/255, b/255); hd = h*360
@@ -618,10 +643,14 @@ def main():
     ds = sorted({r[0] for r in rows})
     tpl = open(os.path.join(ROOT, "template.html"), encoding="utf-8").read()
     J = lambda o: json.dumps(o, ensure_ascii=False, separators=(",", ":"))
-    out = (tpl.replace("__TH__", J(TH)).replace("__CRD__", J(CRD)).replace("__TAG__", J(TAG))
-              .replace("__S__", J(S)).replace("__E__", J(rows)).replace("__U__", J(UNDATED)).replace("__PIN__", J(PIN))
-              .replace("__TODAY__", HI)
-              .replace("__BUILT__", now_jst().strftime("%Y-%m-%d %H:%M")))
+    def render(th):
+        return (tpl.replace("__TH__", J(th)).replace("__CRD__", J(CRD)).replace("__TAG__", J(TAG))
+                   .replace("__S__", J(S)).replace("__E__", J(rows)).replace("__U__", J(UNDATED)).replace("__PIN__", J(PIN))
+                   .replace("__TODAY__", HI)
+                   .replace("__BUILT__", now_jst().strftime("%Y-%m-%d %H:%M")))
+
+    # Artifact 版: 外部リクエストが禁じられているので画像を埋め込む
+    out = render(TH)
     p = os.path.join(DIST, "index.html")
     open(p, "w", encoding="utf-8").write(out)
 
@@ -652,16 +681,19 @@ def main():
     # Netlify へドラッグする一式を deploy/ に揃える（関数と設定は据え置き）
     dep = os.path.join(ROOT, "deploy")
     if os.path.isdir(dep):
-        import shutil
-        for f in ("index.html", "og.png", "data.json"):
+        for f in ("og.png", "data.json"):
             src_f = os.path.join(DIST, f)
             if os.path.exists(src_f): shutil.copyfile(src_f, os.path.join(dep, f))
-        log("  deploy/ を更新")
+        # Web 版は画像を別ファイルにする。HTML が桁違いに軽くなり、
+        # 画像はブラウザにキャッシュされるので転送量も大幅に減る。
+        web = render(thumb_files(dep))
+        open(os.path.join(dep, "index.html"), "w", encoding="utf-8").write(web)
+        log(f"  deploy/ を更新  index.html {len(web.encode())/1e6:.2f} MB"
+            f"（埋め込み版 {len(out.encode())/1e6:.2f} MB）")
 
     # スマホアプリ（Expo）にも同じデータを配る
     appdir = os.path.join(os.path.dirname(ROOT), "gallery-app", "assets", "data")
     if os.path.isdir(appdir):
-        import shutil
         shutil.copyfile(jp, os.path.join(appdir, "digest.json"))
         log(f"  gallery-app へコピー済み")
     log(f"\n== 完了 ==\n  {p}  ({len(out.encode())/1e6:.2f} MB)")

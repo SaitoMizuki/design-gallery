@@ -7,3 +7,4 @@ node_modules/
 .DS_Store
 deploy/index.html
 deploy/data.json
+deploy/th/
