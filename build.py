@@ -675,6 +675,20 @@ def main():
     dead = [S[k]["n"] for k in S if k not in got and k not in undated_src]
     if dead:
         log("  !! 取得0件: " + ", ".join(dead))
+        # 取得した中身を覗く。0件の原因が遮断なのか構造変更なのかを切り分けるため。
+        pref = {"awwwards": "aww_", "sankou": "sankou_", "wdc": "wdc_", "muuuuu": "muuuuu_",
+                "io3000": "io3000_", "w81": "w81_", "fwa": "fwa_", "cssda": "cssda_",
+                "aaa11y": "aaa11y", "hover": "hover", "g1uu": "g1uu_"}
+        for k in S:
+            if S[k]["n"] not in dead or k not in pref: continue
+            fs = sorted(f for f in os.listdir(CACHE) if f.startswith(pref[k]))
+            if not fs:
+                log(f"     {k}: キャッシュなし（一度も取得できていない）")
+                continue
+            f0 = os.path.join(CACHE, fs[0])
+            head = open(f0, encoding="utf-8", errors="replace").read(400)
+            head = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", head)).strip()
+            log(f"     {k}: {fs[0]} {os.path.getsize(f0)}B  先頭> {head[:180]}")
 
 if __name__ == "__main__":
     main()
