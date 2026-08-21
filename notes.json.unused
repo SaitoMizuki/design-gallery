@@ -1,0 +1,29 @@
+[
+ {"h":"更新について","why":"毎朝9時に各ギャラリーを自動で取得し、このページを作り直しています。ブックマーク・既読・タイプ編集はブラウザ内に保存されるため、更新しても消えません。","li":[]},
+ {"h":"タグについて","why":"SANKOU! の「タイプ」「色・配色」と同じ2軸に揃えています。上部のタグ行とカード上のタグはどちらも押すと絞り込みになります。「タイプを編集」から手で直すこともできます。","li":[
+   ["タイプ","https://sankoudesign.com/","81-web.com・The FWA・Awwwards・Web Design Clip が公開しているサイト種別を、SANKOU! の「タイプ」語彙に対応付けたものです。種別を公開していないギャラリーの分は空欄になります"],
+   ["色・配色","https://sankoudesign.com/","各ギャラリーはこの情報をほとんど公開していないため、取得したサムネイル画像を解析して主要な配色を判定し、SANKOU! の「色・配色」語彙に割り当てています。ギャラリーの表記ではなく画像からの自動判定である点にご注意ください"]
+ ]},
+ {"h":"制作者について","why":"各ギャラリーが公開しているクレジット表記から取得したもので、掲載のないものは空欄です。","li":[
+   ["The FWA","https://thefwa.com/","API の profiles（制作会社・個人）から取得"],
+   ["CSS Design Awards","https://www.cssdesignawards.com/","各作品ページの author 表記"],
+   ["Awwwards","https://www.awwwards.com/","各作品ページの users-credits"],
+   ["MUUUUU.ORG","https://muuuuu.org/","一覧の「制作者一覧」"],
+   ["81-web.com","https://81-web.com/","API の catCredit"],
+   ["SANKOU!","https://sankoudesign.com/","各作品ページの「クレジット」欄（掲載がないものもあります）"],
+   ["hoverstat.es","https://www.hoverstat.es/","トップの Credits 表記があるものだけ"],
+   ["S5-Style","https://www.s5-style.com/all/","API に author 項目はありますが、これは投稿したキュレーターであり制作者ではないため採用していません"]
+ ]},
+ {"h":"収録範囲について","why":"","li":[
+   ["収録期間","https://sankoudesign.com/","直近1ヶ月。各ギャラリーを期間に届くまでページをさかのぼって取得しています"],
+   ["Awwwards","https://www.awwwards.com/","Site of the Day のみを収録し、ノミネートは除いています"],
+   ["CSS Design Awards","https://www.cssdesignawards.com/","Website of the Day のみを収録"],
+   ["日付を持たないギャラリー","https://www.s5-style.com/all/","S5-Style・siteinspire・siiimple・Klikkenthéke・Internet Gems・デザインのこと・ちょうどいいデザイン は投稿日を持たないため「日付表記のない掲載」に分けています。この分は自動更新の対象外です"]
+ ]},
+ {"h":"取得できなかったサイト","why":"","li":[
+   ["MF Design Gallery","https://mf-design-gallery.studio.site/","STUDIO 製。掲載データが認証必須の Firestore 上にあり、公開経路からは読み出せません。公開スナップショットの最終発行は 2025-05-26"],
+   ["現代デザイン","https://gendaidesign.com/","最新掲載が 2023-10-27 で更新が止まっています"],
+   ["mikke!","https://mikke.scale-group.co.jp/","PICK UP の最新が 2025-03-31 で更新が止まっています"],
+   ["Parts Design","https://partsdesign.net/","一覧は表示されるが日付表記がありません"]
+ ]}
+]

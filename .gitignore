@@ -1,0 +1,9 @@
+cache/
+dist/
+logs/
+*.bak
+node_modules/
+.netlify/
+.DS_Store
+deploy/index.html
+deploy/data.json

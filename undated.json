@@ -1,0 +1,69 @@
+[
+ {"s":"s5","note":"api.s5-style.com/posts に日付項目なし。投稿ID降順","items":[
+   ["SK — Visual Archive","https://sk-visualarchive.vercel.app/","#11872"],
+   ["株式会社マイベスト コーポレートサイト","https://my-best.com/company/","#11871"],
+   ["産経デジタル採用サイト","https://www.sankei-digital.co.jp/recruit/","#11870"],
+   ["Taiga | 写真家 大河","https://taiga.art/","#11869"],
+   ["海鮮居酒屋「まぐろ大谷」","https://maguro-otani.com/","#11868"],
+   ["株式会社パラダイム・システムズ","https://www.pdmsys.co.jp/","#11867"],
+   ["株式会社ベスティ","https://bestie-sports.co.jp/","#11866"],
+   ["髙松建設｜建築・建替え・資産活用の総合建設会社","https://www.takamatsu-const.co.jp/","#11865"],
+   ["株式会社ジーアングル","https://www.g-angle.co.jp/","#11864"],
+   ["ビークルエナジージャパン株式会社｜採用サイト","https://recruit.ve-j.co.jp/","#11863"],
+   ["株式会社品川測器製作所","https://shinagawasokki.co.jp/","#11862"],
+   ["株式会社昭和設計","https://www.showa-sekkei.co.jp/","#11861"]
+ ]},
+ {"s":"dnk","note":"月単位の表記のみ","items":[
+   ["Kimiko Portfolio","https://kimiko-design.studio.site/","2026.8"],
+   ["ぎゅぎゅっと オレンジ & マンゴー フラペチーノ｜スターバックス","https://www.starbucks.co.jp/cafe/orange-mango/","2026.8"],
+   ["映画『北極百貨店のコンシェルジュさん』","https://hokkyoku-dept.com/","2026.8"],
+   ["えんとつ町のプペル保育園","https://poupelle-kids.jp/","2026.8"],
+   ["NSSG","https://nssg.jp/","2026.7"]
+ ]},
+ {"s":"choodoi","note":"TODAY'S 枠以外は日付表記なし","items":[
+   ["MOHEIM","https://moheim.com/jp/",""],
+   ["JINBO MINAMI AOYAMA","https://jinbo-ma.jp/",""],
+   ["Cellato","https://cellato.tokyo/",""],
+   ["須田景凪 official website","https://www.tabloid0120.com/",""],
+   ["株式会社寺田ニット","https://terada-knit.co.jp/",""],
+   ["スピッカート","https://spicato.com/",""]
+ ]},
+ {"s":"siteinspire","note":"一覧が完全にJavaScript描画のため掲載順のみ","items":[
+   ["R100","https://www.r-100.no/",""],
+   ["Studio Bruch","https://studiobruch.com/",""],
+   ["Focal Glow","https://focalglow.co/",""],
+   ["Huts","https://huts.com/",""],
+   ["Estudio Niksen","https://estudioniksen.com/",""],
+   ["Everyday","https://everyday.io/",""],
+   ["Bureau Rouge","https://bureaurouge.com/",""],
+   ["Beats in Space","https://www.beatsinspace.net/",""],
+   ["Zauberberg","https://zauberbergproductions.com/",""],
+   ["Collection","https://www.collection.industries/en",""]
+ ]},
+ {"s":"siiimple","note":"日付表記なし。グリッド掲載順","items":[
+   ["Dithering","https://dithering.fm",""],
+   ["Jonas Peterson","https://jonaspeterson.com",""],
+   ["Delayed Gratification","https://www.slow-journalism.com",""],
+   ["Great Performances","https://www.greatperformances.com",""],
+   ["Beyond Tellerrand","https://beyondtellerrand.com",""],
+   ["Criminal","https://thisiscriminal.com",""],
+   ["Attio","https://attio.com",""],
+   ["404 Media","https://www.404media.co",""],
+   ["Lineto","https://lineto.com",""],
+   ["Blue Strawberry","https://www.bluestrawberry.co.uk",""]
+ ]},
+ {"s":"klik","note":"通し番号のみ","items":[
+   ["Friends of Decimal","https://friendsof.decimalstudios.com/","#1407"],
+   ["Naturehumaine","https://naturehumaine.com/","#1406"],
+   ["a-lign studio","https://www.a-lign.studio/","#1405"],
+   ["Francesco Maria Falcone","https://francescomariafalcone.com/","#1404"],
+   ["Alessandro Vogel","https://alessandrovogel.ch/","#1403"]
+ ]},
+ {"s":"gems","note":"日付表記なし。Featured 掲載順","items":[
+   ["Saba","https://ilovecreatives.com/internet-gem-websites/saba",""],
+   ["Warm and Fuzzy","https://ilovecreatives.com/internet-gem-websites/warm-and-fuzzy",""],
+   ["Cecilie Bahnsen","https://ilovecreatives.com/internet-gem-websites/cecilie-bahnsen",""],
+   ["Union Boulangerie","https://ilovecreatives.com/internet-gem-websites/union-boulangerie","site of the week"],
+   ["Robert Tran","https://ilovecreatives.com/internet-gem-websites/robert-tran",""]
+ ]}
+]

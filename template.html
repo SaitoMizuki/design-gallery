@@ -1,0 +1,1218 @@
+<title>Design gallery</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2212%22%20fill%3D%22%230D1413%22%2F%3E%3Ctext%20x%3D%2232%22%20y%3D%2247%22%20text-anchor%3D%22middle%22%20font-family%3D%22Avenir%20Next%2CHelvetica%20Neue%2CHelvetica%2CArial%2Csans-serif%22%20font-size%3D%2252%22%20font-weight%3D%22700%22%20fill%3D%22%23E7EFEC%22%3ED%3C%2Ftext%3E%3C%2Fsvg%3E">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Design gallery">
+<meta property="og:description" content="国内外のWebデザインギャラリーを1ヶ月分まとめたもの。">
+<meta property="og:image" content="og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Design gallery">
+<meta name="twitter:image" content="og.png">
+<style>
+  :root{
+    --bg:#FFFFFF; --surface:#FFFFFF; --surface-2:#EEF2F1;
+    --ink:#12201D; --ink-2:#46605B; --ink-3:#7C918D;
+    --rule:#DDE5E3; --rule-2:#C7D4D1;
+    --accent:#0A6B5C; --accent-soft:#DCEEE9;
+    --mark:#B26A12; --mark-soft:#F6E7CE; --bm-bg:rgba(255,255,255,.84);
+    --sat:#C0392B; --sun:#2C5EA8; --wd:#000000;
+    --seen-badge-bg:#12201D; --seen-badge-ink:#FFFFFF;
+    --cat-jp:#0A6B5C; --cat-award:#B26A12; --cat-intl:#4A5BAF; --cat-a11y:#3F7D2E;
+    --shadow:0 1px 2px rgba(18,32,29,.05), 0 8px 24px -16px rgba(18,32,29,.25);
+    --display:"Avenir Next","Helvetica Neue",Helvetica,"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",YuGothic,"Noto Sans JP",sans-serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",YuGothic,"Noto Sans JP",sans-serif;
+    --ctl-h:34px;
+    --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --bg:#0D1413; --surface:#15201E; --surface-2:#1C2926;
+      --ink:#E7EFEC; --ink-2:#9DB3AE; --ink-3:#6E8480;
+      --rule:#24322F; --rule-2:#31423E;
+      --accent:#4CCCB4; --accent-soft:#12332D;
+      --mark:#E0A758; --mark-soft:#3A2C16; --bm-bg:rgba(21,32,30,.84);
+      --sat:#F2867A; --sun:#82AAEC; --wd:#E7EFEC;
+      --seen-badge-bg:#E7EFEC; --seen-badge-ink:#0D1413;
+      --cat-jp:#4CCCB4; --cat-award:#E0A758; --cat-intl:#8E9CE8; --cat-a11y:#7FC46A;
+      --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 24px -16px rgba(0,0,0,.8);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0D1413; --surface:#15201E; --surface-2:#1C2926;
+    --ink:#E7EFEC; --ink-2:#9DB3AE; --ink-3:#6E8480;
+    --rule:#24322F; --rule-2:#31423E;
+    --accent:#4CCCB4; --accent-soft:#12332D;
+    --mark:#E0A758; --mark-soft:#3A2C16; --bm-bg:rgba(21,32,30,.84);
+    --sat:#F2867A; --sun:#82AAEC; --wd:#E7EFEC;
+    --seen-badge-bg:#E7EFEC; --seen-badge-ink:#0D1413;
+    --cat-jp:#4CCCB4; --cat-award:#E0A758; --cat-intl:#8E9CE8; --cat-a11y:#7FC46A;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 24px -16px rgba(0,0,0,.8);
+  }
+
+  *{box-sizing:border-box}
+  body{margin:0; background:var(--bg); color:var(--ink);
+    font-family:var(--sans); font-size:15px; line-height:1.65; -webkit-font-smoothing:antialiased}
+  a{color:inherit}
+  :focus-visible{outline:2px solid var(--accent); outline-offset:2px; border-radius:2px}
+  .wrap{max-width:1040px; margin:0 auto; padding:0 24px 96px}
+
+  .masthead{position:relative; padding:48px 0 22px}
+  .theme-toggle{position:absolute; top:44px; right:0; z-index:30;
+    width:36px; height:36px; padding:0; cursor:pointer; display:grid; place-items:center;
+    border-radius:50%; background:var(--surface); color:var(--ink-2); border:1px solid var(--rule-2);
+    transition:background .15s, color .15s, border-color .15s}
+  .theme-toggle:hover{border-color:var(--ink-3); color:var(--ink)}
+  .theme-toggle .tt-icon{display:block; line-height:0}
+  .theme-toggle svg{width:16px; height:16px; display:block}
+  .masthead h1{font-family:var(--display); font-weight:700; font-size:clamp(33px,5.8vw,50px);
+    line-height:1.12; letter-spacing:-.015em; margin:0; text-wrap:balance; padding-right:52px}
+  .lede{margin:14px 0 0; max-width:60ch; color:var(--ink-2); font-size:14.5px}
+  .figures{display:flex; flex-wrap:wrap; gap:6px 26px; margin:14px 0 0; padding-top:13px;
+    border-top:1px solid var(--rule);
+    font-family:var(--mono); font-size:11.5px; letter-spacing:.04em; color:var(--ink-3);
+    font-variant-numeric:tabular-nums}
+  .figures b{font-weight:600; color:var(--ink); font-size:13px}
+
+  .toolbar{position:sticky; top:0; z-index:20; background:var(--bg);
+    margin-bottom:8px; padding:12px 0}
+  .toolbar-head{display:flex; align-items:center; gap:10px; flex-wrap:wrap}
+  .search{position:relative; display:flex; align-items:center; flex:1 1 240px}
+  .search-icon{position:absolute; left:11px; width:14px; height:14px; color:var(--ink-3);
+    pointer-events:none}
+  .search input{
+    font:inherit; font-size:12.5px; line-height:1; width:100%;
+    height:var(--ctl-h); padding:0 30px 0 31px; border-radius:999px;
+    background:var(--surface); color:var(--ink); border:1px solid var(--rule-2);
+    transition:border-color .12s;
+  }
+  .search input::placeholder{color:var(--ink-3)}
+  .search input:focus{outline:none; border-color:var(--ink-3)}
+  .search input::-webkit-search-cancel-button{-webkit-appearance:none; appearance:none}
+  .search input:not(:placeholder-shown){border-color:var(--accent)}
+  #search-clear{
+    position:absolute; right:6px; width:22px; height:22px; padding:0; cursor:pointer;
+    display:grid; place-items:center; border:0; border-radius:50%;
+    background:transparent; color:var(--ink-3); font-size:16px; line-height:1;
+  }
+  #search-clear:hover{color:var(--ink); background:var(--surface-2)}
+
+  /* 検索窓と同じ見た目に揃える */
+  .addurl{position:relative; display:flex; align-items:center; flex:1 1 260px}
+  .addurl-icon{position:absolute; left:11px; width:14px; height:14px; color:var(--ink-3);
+    pointer-events:none; z-index:1}
+  .addurl input{
+    font:inherit; font-size:12.5px; line-height:1; width:100%;
+    height:var(--ctl-h); padding:0 62px 0 31px; border-radius:999px;
+    background:var(--surface); color:var(--ink); border:1px solid var(--rule-2);
+    transition:border-color .12s;
+  }
+  .addurl input::placeholder{color:var(--ink-3)}
+  .addurl input:focus{outline:none; border-color:var(--ink-3)}
+  .addurl input:not(:placeholder-shown){border-color:var(--accent)}
+  #add-btn{
+    position:absolute; right:5px; font:inherit; font-size:11.5px; line-height:1; cursor:pointer;
+    height:calc(var(--ctl-h) - 10px); padding:0 11px; border-radius:999px;
+    background:var(--surface-2); color:var(--ink-2); border:1px solid transparent;
+    transition:background .12s, color .12s, border-color .12s;
+  }
+  #add-btn:hover{border-color:var(--accent); color:var(--accent)}
+  .addurl.bad input{border-color:var(--sat)}
+  .filter-toggle{font:inherit; font-size:12.5px; line-height:1; display:inline-flex; align-items:center;
+    gap:8px; height:var(--ctl-h); padding:0 14px; border-radius:999px; cursor:pointer; background:var(--surface);
+    color:var(--ink-2); border:1px solid var(--rule-2);
+    transition:background .12s, color .12s, border-color .12s}
+  .filter-toggle:hover{border-color:var(--ink-3); color:var(--ink)}
+  .filter-toggle .chev{width:12px; height:12px; flex:0 0 auto; transition:transform .18s ease}
+  .filter-toggle[aria-expanded="true"]{background:var(--ink); color:var(--bg); border-color:var(--ink)}
+  .filter-toggle[aria-expanded="true"] .chev{transform:rotate(180deg)}
+  .fbadge{font-family:var(--mono); font-size:10px; line-height:1; font-variant-numeric:tabular-nums;
+    min-width:16px; padding:3px 5px; border-radius:999px; text-align:center;
+    background:var(--accent); color:var(--bg)}
+  .filter-toggle[aria-expanded="true"] .fbadge{background:var(--bg); color:var(--ink)}
+  #filter-panel{padding-top:11px}
+  .toolbar-row{display:flex; flex-wrap:wrap; gap:8px; align-items:center}
+  .toolbar-row + .toolbar-row{margin-top:17px}
+  .tool-label{font-family:var(--mono); font-size:10.5px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--ink-3); margin-right:4px; flex:0 0 auto}
+  .chip{font:inherit; font-size:12.5px; line-height:1; display:inline-flex; align-items:center; gap:6px;
+    padding:7px 11px; border-radius:999px; cursor:pointer; background:var(--surface); color:var(--ink-2);
+    border:1px solid var(--rule-2); transition:background .12s, color .12s, border-color .12s}
+  .chip:hover{border-color:var(--ink-3); color:var(--ink)}
+  .chip .dot{width:7px; height:7px; border-radius:50%; background:var(--d,var(--ink-3)); flex:0 0 auto}
+  .chip .ct{font-family:var(--mono); font-size:10.5px; color:var(--ink-3); font-variant-numeric:tabular-nums}
+  .chip[aria-pressed="true"]{background:var(--ink); color:var(--bg); border-color:var(--ink)}
+  .chip[aria-pressed="true"] .ct{color:var(--bg); opacity:.65}
+  .chip.mark-toggle[aria-pressed="true"]{background:var(--mark); border-color:var(--mark); color:#fff}
+  .chip.ghost{background:transparent; border-style:dashed}
+  .sync-state{font-family:var(--mono); font-size:10.5px; color:var(--ink-3)}
+  .sync-state.ok{color:var(--accent)}
+  .sync-state.ng{color:var(--sat)}
+  .storage-warn{margin:9px 0 0; font-size:12px; line-height:1.55; color:var(--mark);
+    display:flex; align-items:flex-start; gap:7px}
+  .storage-warn::before{content:""; width:5px; height:5px; border-radius:50%; margin-top:7px;
+    background:var(--mark); flex:0 0 auto}
+
+  .day{display:grid; grid-template-columns:132px minmax(0,1fr); gap:0 28px;
+    padding:26px 0 4px; border-bottom:1px solid var(--rule)}
+  .day-mark{position:sticky; top:112px; align-self:start; padding-top:2px}
+  .day-num{font-family:var(--display); font-size:42px; line-height:.92; font-weight:700;
+    font-variant-numeric:tabular-nums; letter-spacing:-.02em; display:block; color:var(--wd)}
+  .day-sub{font-family:var(--mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--ink-3); margin-top:9px; display:block}
+  .day-count{font-family:var(--mono); font-size:11px; color:var(--ink-3); margin-top:3px; display:block;
+    font-variant-numeric:tabular-nums}
+  /* 平日は黒。本日であることは日付の色ではなく「本日」ラベルで示す */
+  .day.is-today .day-count{color:var(--accent); font-weight:600}
+  .day.is-sat .day-num, .day.is-sat .day-sub{color:var(--sat)}
+  .day.is-sun .day-num, .day.is-sun .day-sub{color:var(--sun)}
+  /* 末尾の区切り線はフッターの罫線と二重になるため落とす */
+  .sec .day:last-child, .sec .group:last-child{border-bottom:0}
+
+  .entries{display:grid; grid-template-columns:repeat(auto-fill,minmax(196px,1fr)); gap:22px 18px}
+  .entry{position:relative; display:flex; flex-direction:column; gap:9px; min-width:0}
+  .shot{display:block; position:relative; aspect-ratio:4/3; overflow:hidden; border-radius:5px;
+    background:var(--surface-2); border:1px solid var(--rule); text-decoration:none}
+  .shot img{width:100%; height:100%; object-fit:cover; object-position:top center; display:block;
+    transition:transform .35s cubic-bezier(.2,.7,.3,1)}
+  .entry:hover .shot img{transform:scale(1.035)}
+  .shot.none{display:grid; place-items:center; padding:10px}
+  .shot.none .ph{font-family:var(--mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--ink-3); text-align:center; line-height:1.5}
+  .seen-badge{position:absolute; left:0; bottom:0; z-index:1; display:none;
+    font-family:var(--mono); font-size:9px; letter-spacing:.12em; padding:3px 6px;
+    border-radius:0 4px 0 4px; background:var(--seen-badge-bg); color:var(--seen-badge-ink)}
+  .entry.seen .seen-badge{display:block}
+  .entry.seen .shot img{opacity:.4; filter:grayscale(.6)}
+  .entry.seen .entry-title{color:var(--ink-3); font-weight:500}
+  .entry.seen:hover .shot img{opacity:.68; filter:grayscale(.2)}
+  .entry-title{font-family:var(--display); font-size:14px; line-height:1.5; font-weight:600;
+    letter-spacing:.005em; text-decoration:none; text-wrap:pretty; display:block}
+  .entry-title:hover{text-decoration:underline; text-underline-offset:3px; text-decoration-thickness:1px}
+
+  .entries.list{display:flex; flex-direction:column; gap:0}
+  .entries.list .entry{display:grid; grid-template-columns:88px minmax(0,1fr) auto; gap:14px;
+    align-items:center; padding:10px 0; flex-direction:row}
+  .entries.list .entry + .entry{border-top:1px solid var(--rule)}
+  .entries.list .shot{aspect-ratio:4/3; border-radius:3px}
+  .entries.list .entry:hover .shot img{transform:none}
+  .entries.list .entry-title{font-size:15px}
+  .entries.list .bm{position:static}
+
+  .entry-meta{display:flex; flex-wrap:wrap; align-items:center; gap:5px 9px; margin-top:5px;
+    font-family:var(--mono); font-size:10.5px; color:var(--ink-3)}
+  .tags{display:flex; flex-wrap:wrap; gap:4px; margin-top:7px}
+  .tag-chip{font:inherit; font-family:var(--mono); font-size:9.5px; line-height:1; letter-spacing:.03em;
+    padding:3px 6px; border-radius:3px; cursor:pointer; background:var(--surface-2); color:var(--ink-2);
+    border:1px solid transparent; display:inline-flex; align-items:center; gap:5px;
+    transition:background .12s, color .12s, border-color .12s}
+  .tag-chip:hover{border-color:var(--ink-3); color:var(--ink)}
+  .tag-chip.on{background:var(--ink); color:var(--bg); border-color:var(--ink)}
+  .sw{width:8px; height:8px; border-radius:2px; flex:0 0 auto; background:var(--sw);
+    box-shadow:inset 0 0 0 1px rgba(128,128,128,.45)}
+  #type-row, #color-row{align-items:flex-start}
+  #type-row .tag-chip, #color-row .tag-chip{font-size:10.5px; padding:5px 8px; border:1px solid var(--rule-2)}
+  .type-edit-btn{font:inherit; font-family:var(--mono); font-size:9.5px; line-height:1; letter-spacing:.03em;
+    padding:3px 7px; border-radius:3px; cursor:pointer; background:transparent; color:var(--accent);
+    border:1px dashed var(--accent)}
+  .type-edit-btn:hover{background:var(--accent-soft)}
+  .edited-mark{font-family:var(--mono); font-size:9px; letter-spacing:.08em; padding:3px 6px;
+    border-radius:3px; background:var(--accent-soft); color:var(--accent)}
+  .type-editor{display:flex; flex-wrap:wrap; gap:4px; margin-top:8px; padding:9px;
+    border:1px dashed var(--rule-2); border-radius:5px; background:var(--surface-2)}
+  .type-editor .chip.ghost{font-size:10.5px; padding:4px 8px}
+  .credit{margin:5px 0 0; display:flex; flex-wrap:wrap; align-items:baseline; gap:4px 6px;
+    font-family:var(--mono); font-size:10.5px; line-height:1.5}
+  .credit-label{font-size:9px; letter-spacing:.12em; color:var(--ink-3); border:1px solid var(--rule-2);
+    border-radius:2px; padding:1px 4px; flex:0 0 auto}
+  .credit-name{color:var(--ink-2); overflow-wrap:anywhere}
+  .credit-sep{color:var(--ink-3)}
+  .src{display:inline-flex; align-items:center; gap:5px; letter-spacing:.03em; color:var(--ink-2)}
+  .src .dot{width:6px; height:6px; border-radius:50%; background:var(--d); flex:0 0 auto}
+  .host{overflow-wrap:anywhere}
+  .tag{border:1px solid var(--rule-2); border-radius:3px; padding:1px 5px; font-size:10px;
+    letter-spacing:.06em; text-transform:uppercase; color:var(--ink-3)}
+
+  .bm{position:absolute; top:7px; right:7px; z-index:2; flex:0 0 auto; width:30px; height:30px;
+    padding:0; cursor:pointer; display:grid; place-items:center; border-radius:5px;
+    background:var(--bm-bg); border:1px solid var(--rule); color:var(--ink-2);
+    -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px);
+    transition:color .12s, background .12s, border-color .12s}
+  .bm:hover{color:var(--mark); border-color:var(--mark)}
+  .bm svg{width:14px; height:16px; display:block}
+  .bm .fill{fill:none; stroke:currentColor; stroke-width:1.6}
+  .bm[aria-pressed="true"]{color:var(--mark); border-color:var(--mark)}
+  .bm[aria-pressed="true"] .fill{fill:currentColor; stroke:currentColor}
+  .entry.marked .shot{border-color:var(--mark); box-shadow:0 0 0 2px var(--mark-soft)}
+  .entry.marked .entry-title{color:var(--mark)}
+
+  .sec{margin-top:0}
+  /* overflow を付けると overflow-y も auto になり、下線のはみ出しがクリップされる */
+  .tabs{display:flex; gap:24px; align-items:flex-end; margin:26px 0 0; flex-wrap:wrap;
+    border-bottom:2px solid var(--rule-2)}
+  .tab{
+    font:inherit; font-family:var(--display); font-size:22px; font-weight:700; letter-spacing:-.005em;
+    background:none; border:0; padding:0 0 10px; cursor:pointer; white-space:nowrap;
+    color:var(--ink-3); position:relative; display:inline-flex; align-items:baseline; gap:0;
+    transition:color .12s;
+  }
+  .tab:hover{color:var(--ink-2)}
+  .tab[aria-selected="true"]{color:var(--ink)}
+  .tab[aria-selected="true"]::after{
+    content:""; position:absolute; left:0; right:0; bottom:-2px; height:4px; background:var(--ink);
+  }
+  .tab .tab-ct{font-family:var(--mono); font-size:12px; font-weight:400; color:var(--ink-3);
+    font-variant-numeric:tabular-nums; position:relative; top:-.62em; margin-left:2px}
+  .tab-note{margin:10px 0 0; color:var(--ink-3); font-size:12.5px}
+  /* 説明行のないタブ（Bookmark）でも Daily/Other と同じ間隔にする */
+  .tabpanel-nonote{margin-top:calc(10px + 12.5px * 1.65)}
+  .group{padding:22px 0 6px; border-bottom:1px solid var(--rule)}
+  .group-head{display:flex; align-items:center; gap:8px; margin-bottom:6px; font-family:var(--mono);
+    font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-2)}
+  .group-head .dot{width:7px;height:7px;border-radius:50%;background:var(--d)}
+  .group-note{font-family:var(--sans); font-size:12px; text-transform:none; letter-spacing:0; color:var(--ink-3)}
+
+  .empty{padding:64px 8px; text-align:center; color:var(--ink-3); font-size:14px}
+  .empty b{display:block; font-family:var(--display); font-size:18px; color:var(--ink-2);
+    margin-bottom:6px; font-weight:600}
+  .foot{margin-top:44px; padding-top:18px; border-top:1px solid var(--rule); font-family:var(--mono);
+    font-size:11px; color:var(--ink-3); letter-spacing:.03em;
+    display:flex; flex-wrap:wrap; gap:6px 20px; justify-content:center}
+
+  @media (max-width:720px){
+    body{font-size:14.5px}
+    .wrap{padding:0 16px 72px; overflow-x:hidden}
+    .masthead{padding:32px 0 18px}
+    .masthead h1{padding-right:48px}
+    .theme-toggle{top:28px}
+    .lede{font-size:13.5px}
+    .figures{gap:2px 18px; font-size:11px}
+    .figures b{font-size:13px}
+
+    .day{grid-template-columns:1fr; gap:0; padding:20px 0 4px}
+    .day-mark{position:static; display:flex; align-items:baseline; gap:10px; margin-bottom:10px;
+      padding-bottom:8px; border-bottom:1px solid var(--rule-2)}
+    .day-num{font-size:28px}
+    .day-sub,.day-count{margin-top:0}
+
+    /* 2列グリッド。1列だと1画面に1件しか入らず一覧性が落ちる */
+    .entries{grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px 12px}
+    .entry-title{font-size:13px; line-height:1.45}
+    .entry-meta{font-size:10px; gap:4px 7px}
+    .credit{font-size:10px}
+    .tag-chip{font-size:9px; padding:3px 5px}
+    .bm{width:34px; height:34px; top:5px; right:5px}
+
+    .entries.list .entry{grid-template-columns:64px minmax(0,1fr) auto; gap:10px}
+    .entries.list .entry-title{font-size:14px}
+
+    /* 操作系は指で押せる大きさに */
+    .toolbar{padding:10px 0}
+    /* タグ行が多く、開くと画面を覆ってしまうので高さを抑えて中でスクロールさせる。
+       下端はフェードさせて「まだ続きがある」ことを示す。
+       padding-bottom はフェード幅と同じにして、最後まで送ったとき中身が隠れないようにする。 */
+    #filter-panel{
+      max-height:58vh; overflow-y:auto; overscroll-behavior:contain;
+      padding-top:20px; padding-right:2px; padding-bottom:56px;
+      -webkit-overflow-scrolling:touch;
+      -webkit-mask-image:linear-gradient(to bottom, #000 calc(100% - 56px), transparent);
+      mask-image:linear-gradient(to bottom, #000 calc(100% - 56px), transparent);
+    }
+    :root{--ctl-h:40px}
+    .filter-toggle{padding:0 16px; font-size:13px}
+    .search{flex:1 1 100%; max-width:none}
+    .addurl{flex:1 1 100%}
+    .addurl input{font-size:13px}
+    .search input{font-size:13px}
+    .toolbar-row{gap:6px}
+    .toolbar-row + .toolbar-row{margin-top:14px}
+    .chip{padding:9px 12px; font-size:12.5px}
+    #type-row .tag-chip, #color-row .tag-chip{padding:8px 10px; font-size:11px}
+    .tool-label{width:100%; margin:0 0 2px}
+
+    .tabs{gap:18px; margin-top:18px}
+    .tab{font-size:18px}
+    .tab-note{font-size:11.5px}
+    .foot{font-size:10.5px; gap:4px 14px}
+  }
+  @media (max-width:339px){
+    .entries{grid-template-columns:1fr}
+    .entry-title{font-size:14px}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none !important; animation:none !important}}
+</style>
+
+<div class="wrap">
+  <header class="masthead">
+    <button class="theme-toggle" id="theme-toggle" type="button">
+      <span class="tt-icon" aria-hidden="true"></span>
+    </button>
+    <h1>Design gallery</h1>
+    <p class="lede">国内外のWebデザインギャラリーを1ヶ月分まとめたもの。</p>
+  </header>
+
+  <div class="toolbar">
+    <div class="toolbar-head">
+      <button class="filter-toggle" id="filter-toggle" type="button"
+              aria-expanded="false" aria-controls="filter-panel">
+        <svg class="chev" viewBox="0 0 12 12" aria-hidden="true">
+          <path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor"
+                stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="ft-label">絞り込み</span>
+        <span class="fbadge" id="filter-badge" hidden>0</span>
+      </button>
+      <div class="search">
+        <svg class="search-icon" viewBox="0 0 16 16" aria-hidden="true">
+          <circle cx="7" cy="7" r="4.6" fill="none" stroke="currentColor" stroke-width="1.6"/>
+          <path d="M10.4 10.4 14 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+        <input id="search" type="search" autocomplete="off" spellcheck="false"
+               placeholder="サイト名・制作者・タグで検索" aria-label="掲載を検索">
+        <button type="button" id="search-clear" aria-label="検索語を消す" hidden>&times;</button>
+      </div>
+      <div class="addurl">
+        <svg class="addurl-icon" viewBox="0 0 16 16" aria-hidden="true">
+          <path d="M6.6 9.4a2.6 2.6 0 0 0 3.7 0l2.3-2.3a2.6 2.6 0 0 0-3.7-3.7l-.9.9"
+                fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M9.4 6.6a2.6 2.6 0 0 0-3.7 0L3.4 8.9a2.6 2.6 0 0 0 3.7 3.7l.9-.9"
+                fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <input id="add-url" type="url" inputmode="url" autocomplete="off" spellcheck="false"
+               placeholder="URLを貼ってブックマークに追加" aria-label="URLをブックマークに追加">
+        <button type="button" id="add-btn">追加</button>
+      </div>
+    </div>
+    <div id="filter-panel" hidden>
+      <div class="toolbar-row" id="cat-row"><span class="tool-label">絞り込み</span></div>
+      <div class="toolbar-row" id="type-row"><span class="tool-label">タイプ</span></div>
+      <div class="toolbar-row" id="color-row"><span class="tool-label">色・配色</span></div>
+      <div class="toolbar-row">
+        <span class="tool-label">表示</span>
+        <button class="chip mark-toggle" id="only-marked" aria-pressed="false" type="button">
+          ブックマークのみ <span class="ct" id="mark-ct">0</span>
+        </button>
+        <button class="chip" id="view-toggle" aria-pressed="false" type="button">リスト表示</button>
+        <button class="chip" id="edit-toggle" aria-pressed="false" type="button">タイプを編集</button>
+        <button class="chip ghost" id="reset" type="button">絞り込みを解除</button>
+        <button class="chip ghost" id="clear-marks" type="button">ブックマークを全消去</button>
+        <button class="chip ghost" id="clear-seen" type="button">既読を消去</button>
+        <button class="chip ghost" id="clear-types" type="button">タイプ編集を全て破棄</button>
+      </div>
+      <div class="toolbar-row" id="sync-row">
+        <span class="tool-label">同期</span>
+        <span class="sync-state" id="sync-state">確認中…</span>
+      </div>
+      <div class="figures">
+        <span>更新 <b>__BUILT__</b></span>
+        <span><b id="fig-entries">0</b> 件の掲載</span>
+        <span><b id="fig-sources">0</b> サイトから取得</span>
+        <span><b id="fig-range">—</b> の範囲</span>
+        <span><b id="fig-credit">0</b> 件に制作者</span>
+        <span><b id="fig-tag">0</b> 件にタグ</span>
+        <span><b id="fig-seen">0</b> 件既読</span>
+        <span><b id="fig-marked">0</b> 件ブックマーク中</span>
+      </div>
+    </div>
+  </div>
+
+  <main id="main"></main>
+  <p class="foot"><span>&copy; Mizuki Saito</span></p>
+</div>
+
+<script>
+"use strict";
+/* スマホで等倍表示にする。ホスト側が既に指定していれば上書きしない */
+/* ホストが head を組む環境でもタブアイコンが出るように差し込む */
+(function ensureIcon() {
+  const href = document.querySelector('link[rel="icon"]')?.getAttribute("href");
+  if (!href) return;
+  document.querySelectorAll('link[rel~="icon"]').forEach(l => l.remove());
+  const l = document.createElement("link");
+  l.setAttribute("rel", "icon");
+  l.setAttribute("type", "image/svg+xml");
+  l.setAttribute("href", href);
+  (document.head || document.documentElement).appendChild(l);
+})();
+
+(function ensureViewport() {
+  let m = document.querySelector('meta[name="viewport"]');
+  if (m) return;
+  m = document.createElement("meta");
+  m.setAttribute("name", "viewport");
+  m.setAttribute("content", "width=device-width, initial-scale=1, viewport-fit=cover");
+  (document.head || document.documentElement).appendChild(m);
+})();
+
+const TH  = __TH__;
+const CRD = __CRD__;
+const TAG = __TAG__;
+const CATS = {
+  jp:    {label:"国内ギャラリー",     v:"var(--cat-jp)"},
+  award: {label:"アワード",           v:"var(--cat-award)"},
+  intl:  {label:"海外キュレーション", v:"var(--cat-intl)"},
+  a11y:  {label:"アクセシビリティ",   v:"var(--cat-a11y)"}
+};
+const S = __S__;
+const E = __E__;
+const U = __U__;
+const PIN = __PIN__;   /* bookmarks.txt 由来。タイトルと og:image を取得済み */
+const TODAY = "__TODAY__";
+
+const KEY = "gallery-digest.bookmarks.v1";
+let marks = new Set(); let seen = new Set(); let canStore = false;
+let rawMarks = [], rawSeen = [];
+try {
+  localStorage.setItem(KEY + ".probe", "1"); localStorage.removeItem(KEY + ".probe"); canStore = true;
+  rawMarks = JSON.parse(localStorage.getItem(KEY) || "[]");
+  rawSeen  = JSON.parse(localStorage.getItem(KEY + ".seen") || "[]");
+} catch (_) { canStore = false; }
+const save = () => { if (canStore) { try { localStorage.setItem(KEY, JSON.stringify([...marks])); } catch (_) {} } if (typeof queuePush === "function") queuePush(); };
+const saveSeen = () => { if (canStore) { try { localStorage.setItem(KEY + ".seen", JSON.stringify([...seen])); } catch (_) {} } if (typeof queuePush === "function") queuePush(); };
+
+/* 記録キーは「ギャラリー|URL」。以前はタイトルも含めていたが、毎朝の再取得で
+   タイトルが変わると別物と判定され既読が消えていたため URL だけを使う。 */
+const idOf = (src, url) => src + "|" + url;
+/* 手動追加分は取得した og:image をそのまま使う（自前ホスティングなので外部画像を出せる） */
+function thumbOf(key) {
+  if (!key.startsWith("manual|")) return null;
+  const u = key.slice(7);
+  const c = custom.find((x) => x.u === u);
+  return c && c.th ? c.th : null;
+}
+/* 旧形式（3つ組）の保存内容を新形式へ寄せる */
+function migrateKeys(list) {
+  const out = new Set();
+  for (const k of list || []) {
+    const p = String(k).split("|");
+    out.add(p.length > 2 ? p[0] + "|" + p[1] : String(k));
+  }
+  return out;
+}
+const host = (u) => { try { return new URL(u).hostname.replace(/^www\./, ""); } catch (_) { return u; } };
+marks = migrateKeys(rawMarks); seen = migrateKeys(rawSeen);
+const WD = ["日","月","火","水","木","金","土"];
+const MO = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
+
+let activeCats = new Set(); let activeTag = null; let onlyMarked = false;
+let activeTab = "dated";   /* 初期表示は日付ごとの掲載 */
+
+/* URL欄から手動で足したブックマーク。ギャラリー由来ではないので専用ソースを持たせる */
+S.manual = { n: "追加したURL", c: "manual", home: "" };
+let custom = [];
+try { custom = JSON.parse(localStorage.getItem(KEY + ".custom") || "[]"); } catch (_) {}
+const saveCustom = () => { if (canStore) { try { localStorage.setItem(KEY + ".custom", JSON.stringify(custom)); } catch (_) {} } if (typeof queuePush === "function") queuePush(); };
+let query = "";            /* 検索語 */
+let listView = false;
+try { listView = localStorage.getItem(KEY + ".view") === "list"; } catch (_) {}
+
+const usedSources = new Set([...E.map(r => r[1]), ...U.map(g => g.s)]);
+const countByCat = {};
+for (const k of Object.keys(CATS)) countByCat[k] = 0;
+for (const r of E) countByCat[S[r[1]].c]++;
+for (const g of U) countByCat[S[g.s].c] += g.items.length;
+document.getElementById("fig-entries").textContent = E.length + U.reduce((n,g)=>n+g.items.length,0);
+document.getElementById("fig-sources").textContent = usedSources.size;
+const dates = [...new Set(E.map(r => r[0]))].sort();
+document.getElementById("fig-range").textContent =
+  dates[0].replace(/-/g,".").slice(5) + "–" + dates[dates.length-1].replace(/-/g,".").slice(5);
+document.getElementById("fig-credit").textContent = Object.keys(CRD).length;
+
+const catRow = document.getElementById("cat-row");
+for (const [k, c] of Object.entries(CATS)) {
+  const b = document.createElement("button");
+  b.type = "button"; b.className = "chip"; b.setAttribute("aria-pressed", "false");
+  b.style.setProperty("--d", c.v);
+  b.innerHTML = '<span class="dot"></span>' + c.label + ' <span class="ct">' + countByCat[k] + '</span>';
+  b.addEventListener("click", () => {
+    activeCats.has(k) ? activeCats.delete(k) : activeCats.add(k);
+    b.setAttribute("aria-pressed", String(activeCats.has(k)));
+    updateFilterBadge(); render();
+  });
+  catRow.appendChild(b);
+}
+const onlyBtn = document.getElementById("only-marked");
+onlyBtn.addEventListener("click", () => {
+  onlyMarked = !onlyMarked;
+  onlyBtn.setAttribute("aria-pressed", String(onlyMarked));
+  updateFilterBadge(); render();
+});
+
+const SWATCH = {
+  "ブラック":"#111111","ホワイト":"#FFFFFF","グレー":"#9AA5A2","ピンク":"#E8709A",
+  "レッド･ワインレッド･バーミリオン":"#C33A2E","オレンジ":"#E2833A","イエロー":"#E5C13E",
+  "グリーン･イエローグリーン":"#5A9E52","ブルー":"#3B7BC4","ネイビー":"#24406E",
+  "ブルーグリーン":"#2E9E96","ベージュ･クリーム":"#DCCBA8","ブラウン･キャメル":"#8B6440",
+  "パープル･ラベンダー":"#8A6BB5","ゴールド":"#C2A05A"
+};
+const TYPES = ["Webサイト","LP","コンテンツページ","コーポレートサイト","ブランドサイト･サービスサイト",
+  "採用サイト","ECサイト","特設サイト･プロモーションサイト","メディア･情報サイト",
+  "ポートフォリオ･プロフィールサイト","周年サイト･記念サイト","プラットフォーム･コミュニティサイト","BtoBのサイト"];
+
+let typeEdits = {};
+try { typeEdits = JSON.parse(localStorage.getItem(KEY + ".types") || "{}"); } catch (_) {}
+const saveTypes = () => { if (!canStore) return; try { localStorage.setItem(KEY + ".types", JSON.stringify(typeEdits)); } catch (_) {} };
+let editMode = false;
+
+const ALL_KEYS = [];
+for (const [d, s, t, u] of E) ALL_KEYS.push(s + "|" + u);
+for (const g of U) for (const it of g.items) ALL_KEYS.push(g.s + "|" + it[1]);
+const effType  = k => (typeEdits[k] !== undefined ? typeEdits[k] : ((TAG[k] || {}).t || []));
+const effColor = k => (TAG[k] || {}).c || [];
+const isEdited = k => typeEdits[k] !== undefined;
+
+let FREQ = { t: {}, c: {} };
+function computeFreq() {
+  FREQ = { t: {}, c: {} };
+  for (const k of ALL_KEYS) {
+    for (const v of effType(k))  FREQ.t[v] = (FREQ.t[v] || 0) + 1;
+    for (const v of effColor(k)) FREQ.c[v] = (FREQ.c[v] || 0) + 1;
+  }
+  let n = 0;
+  for (const k of ALL_KEYS) if (effType(k).length || effColor(k).length) n++;
+  document.getElementById("fig-tag").textContent = n;
+}
+computeFreq();
+const ORDER = kind => Object.entries(FREQ[kind]).sort((a,b) => b[1]-a[1] || a[0].localeCompare(b[0]));
+const isOn = (kind, v) => !!activeTag && activeTag.k === kind && activeTag.v === v;
+
+function tagChip(kind, v, withCount) {
+  const b = document.createElement("button");
+  b.type = "button";
+  b.className = "tag-chip" + (isOn(kind, v) ? " on" : "");
+  if (kind === "c" && SWATCH[v]) {
+    const sw = document.createElement("span");
+    sw.className = "sw"; sw.style.setProperty("--sw", SWATCH[v]);
+    b.appendChild(sw);
+  }
+  b.appendChild(document.createTextNode(withCount ? v + " " + (FREQ[kind][v] || 0) : v));
+  b.title = "「" + v + "」で絞り込む";
+  b.addEventListener("click", () => setTag(isOn(kind, v) ? null : { k: kind, v: v }));
+  return b;
+}
+function setTag(t) { activeTag = t; buildTagRows(); updateFilterBadge(); render(); }
+function applyTypeEditLight() { saveTypes(); computeFreq(); buildTagRows(); if (activeTag) render(); }
+function buildTagRows() {
+  [["t","type-row"],["c","color-row"]].forEach(([kind,id]) => {
+    const row = document.getElementById(id);
+    row.querySelectorAll(".tag-chip, .tag-clear").forEach(e => e.remove());
+    ORDER(kind).forEach(([v]) => row.appendChild(tagChip(kind, v, true)));
+    if (activeTag && activeTag.k === kind) {
+      const c = document.createElement("button");
+      c.type = "button"; c.className = "chip ghost tag-clear"; c.textContent = "解除";
+      c.addEventListener("click", () => setTag(null));
+      row.appendChild(c);
+    }
+  });
+}
+buildTagRows();
+
+const fPanel = document.getElementById("filter-panel");
+const fToggle = document.getElementById("filter-toggle");
+const fBadge = document.getElementById("filter-badge");
+let filtersOpen = false;
+try { filtersOpen = localStorage.getItem(KEY + ".filters") === "open"; } catch (_) {}
+function syncFilters(){
+  fPanel.hidden = !filtersOpen;
+  fToggle.setAttribute("aria-expanded", String(filtersOpen));
+  fToggle.querySelector(".ft-label").textContent = filtersOpen ? "閉じる" : "絞り込み";
+}
+function updateFilterBadge() {
+  const n = activeCats.size + (activeTag ? 1 : 0) + (onlyMarked ? 1 : 0) + (query ? 1 : 0);
+  fBadge.hidden = n === 0; fBadge.textContent = n;
+  fToggle.title = n ? n + " 件の条件で絞り込み中" : "絞り込みと表示の設定";
+}
+fToggle.addEventListener("click", () => {
+  filtersOpen = !filtersOpen;
+  if (canStore) { try { localStorage.setItem(KEY + ".filters", filtersOpen ? "open" : "closed"); } catch (_) {} }
+  syncFilters();
+});
+syncFilters();
+
+const SUN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.2M12 19.2v2.2M21.4 12h-2.2M4.8 12H2.6M18.6 5.4l-1.6 1.6M7 17l-1.6 1.6M18.6 18.6L17 17M7 7L5.4 5.4"/></svg>';
+const MOON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 14.3A8.5 8.5 0 1 1 9.7 3.5a6.8 6.8 0 0 0 10.8 10.8z"/></svg>';
+const themeBtn = document.getElementById("theme-toggle");
+const mqDark = window.matchMedia("(prefers-color-scheme: dark)");
+function currentTheme() {
+  const a = document.documentElement.getAttribute("data-theme");
+  if (a === "dark" || a === "light") return a;
+  return mqDark.matches ? "dark" : "light";
+}
+function syncTheme() {
+  const dark = currentTheme() === "dark";
+  themeBtn.querySelector(".tt-icon").innerHTML = dark ? SUN : MOON;
+  themeBtn.setAttribute("aria-label", dark ? "ライトモードに切り替える" : "ダークモードに切り替える");
+  themeBtn.title = dark ? "ライトモードに切り替える" : "ダークモードに切り替える";
+}
+/* 端末で既定を分ける: PC はライト、スマホ・タブレットはダーク。
+   テーマボタンで一度でも切り替えたら、その選択が以降は優先される。 */
+function deviceDefaultTheme() {
+  const ua = navigator.userAgent || "";
+  const mobile = /Android|iPhone|iPad|iPod|Mobile|Silk|Kindle/i.test(ua)
+    || (matchMedia("(pointer: coarse)").matches && matchMedia("(max-width: 1024px)").matches)
+    || matchMedia("(max-width: 720px)").matches;
+  return mobile ? "dark" : "light";
+}
+let savedTheme = null;
+try { savedTheme = localStorage.getItem(KEY + ".theme"); } catch (_) {}
+document.documentElement.setAttribute("data-theme",
+  (savedTheme === "dark" || savedTheme === "light") ? savedTheme : deviceDefaultTheme());
+themeBtn.addEventListener("click", () => {
+  const next = currentTheme() === "dark" ? "light" : "dark";
+  document.documentElement.setAttribute("data-theme", next);
+  if (canStore) { try { localStorage.setItem(KEY + ".theme", next); } catch (_) {} }
+  syncTheme();
+});
+mqDark.addEventListener("change", () => { if (!document.documentElement.hasAttribute("data-theme")) syncTheme(); });
+syncTheme();
+
+const editBtn = document.getElementById("edit-toggle");
+editBtn.addEventListener("click", () => {
+  editMode = !editMode;
+  editBtn.setAttribute("aria-pressed", String(editMode));
+  editBtn.textContent = editMode ? "編集を終了" : "タイプを編集";
+  render();
+});
+document.getElementById("clear-types").addEventListener("click", () => {
+  const n = Object.keys(typeEdits).length;
+  if (!n) return;
+  if (!confirm("タイプの編集 " + n + " 件をすべて破棄し、自動判定に戻します。よろしいですか？")) return;
+  typeEdits = {}; saveTypes(); computeFreq(); buildTagRows(); render();
+});
+const viewBtn = document.getElementById("view-toggle");
+function syncView(){ viewBtn.setAttribute("aria-pressed", String(listView)); viewBtn.textContent = listView ? "サムネイル表示" : "リスト表示"; }
+viewBtn.addEventListener("click", () => {
+  listView = !listView;
+  if (canStore) { try { localStorage.setItem(KEY + ".view", listView ? "list" : "grid"); } catch (_) {} }
+  syncView();
+  document.querySelectorAll(".entries").forEach(e => e.classList.toggle("list", listView));
+});
+syncView();
+document.getElementById("clear-seen").addEventListener("click", () => {
+  if (!seen.size) return;
+  if (!confirm("既読 " + seen.size + " 件をすべて未読に戻します。よろしいですか？")) return;
+  seen.clear(); saveSeen(); render();
+});
+document.getElementById("clear-marks").addEventListener("click", () => {
+  if (!marks.size) return;
+  if (!confirm("ブックマーク " + marks.size + " 件をすべて消去します。よろしいですか？")) return;
+  marks.clear(); save(); render();
+});
+/* ---- 端末間同期 ----------------------------------------------------
+   合言葉なしで、ページを開くだけで PC / スマホが同じ内容になる。
+   サーバーの更新時刻が自分の最終書き込みより新しいときだけ取り込むので、
+   相手が空でも自分の記録が消えない。初回だけ双方を足し合わせる。 */
+const SYNC_API = "/api/bookmarks";
+const SYNC_ID  = "dg-mizuki-9f3c7a21";
+const syncState = document.getElementById("sync-state");
+let syncTimer = null, syncing = false, dirty = false, pendingPush = false;
+let syncReady = false, merged = false, lastAt = "";
+
+function setSyncState(msg, cls) {
+  syncState.textContent = msg || "";
+  syncState.className = "sync-state" + (cls ? " " + cls : "");
+}
+const snapshot = () => ({ marks: [...marks], seen: [...seen], custom });
+
+function adopt(d, mergeLocal) {
+  const sMarks = new Set(d.marks || []);
+  const sSeen  = new Set(d.seen || []);
+  let sCustom  = Array.isArray(d.custom) ? d.custom : [];
+  if (mergeLocal) {                       /* 初回だけ、どちらの端末の記録も残す */
+    for (const v of marks) sMarks.add(v);
+    for (const v of seen)  sSeen.add(v);
+    const has = new Set(sCustom.map(c => c.u));
+    for (const c of custom) if (!has.has(c.u)) sCustom.push(c);
+  }
+  marks = sMarks; seen = sSeen; custom = sCustom;
+  if (canStore) {
+    try {
+      localStorage.setItem(KEY, JSON.stringify([...marks]));
+      localStorage.setItem(KEY + ".seen", JSON.stringify([...seen]));
+      localStorage.setItem(KEY + ".custom", JSON.stringify(custom));
+    } catch (_) {}
+  }
+  computeFreq(); buildTagRows(); updateFilterBadge(); render();
+}
+
+async function pull(force) {
+  /* 送信待ちの変更があるときに取り込むと、その変更が消えるので待つ */
+  if (!force && (syncing || dirty || pendingPush)) return false;
+  try {
+    const r = await fetch(SYNC_API + "?k=" + SYNC_ID, { cache: "no-store" });
+    if (!r.ok) throw new Error(String(r.status));
+    const d = await r.json();
+    syncReady = true;
+    if (!merged) {                        /* 初回: 双方を統合してから送る */
+      merged = true;
+      adopt(d, true);
+      await push();
+    } else if (d.at && d.at > lastAt) {   /* 他端末の新しい変更だけ取り込む */
+      lastAt = d.at;
+      adopt(d, false);
+    }
+    setSyncState("同期済み", "ok");
+    return true;
+  } catch (_) {
+    syncReady = false;
+    setSyncState("この端末内にのみ保存されます");
+    return false;
+  }
+}
+
+async function push() {
+  if (!syncReady) return;
+  if (syncing) { dirty = true; return; }  /* 送信中の変更も取りこぼさない */
+  syncing = true;
+  try {
+    const r = await fetch(SYNC_API + "?k=" + SYNC_ID, {
+      method: "POST", headers: { "content-type": "application/json" },
+      body: JSON.stringify(snapshot()),
+    });
+    if (r.ok) {
+      const d = await r.json();
+      if (d && d.at) lastAt = d.at;       /* 自分の書き込みを基準時刻にする */
+      setSyncState("同期済み", "ok");
+    } else setSyncState("保存できません", "ng");
+  } catch (_) { setSyncState("保存できません", "ng"); }
+  syncing = false;
+  if (dirty) { dirty = false; push(); }
+}
+
+function queuePush() {
+  if (!syncReady) return;
+  pendingPush = true;
+  clearTimeout(syncTimer);
+  syncTimer = setTimeout(() => { pendingPush = false; push(); }, 600);
+}
+pull(true);
+/* 別の端末の変更を拾う。開いた時だけでは気づけないので定期的にも確認する。 */
+document.addEventListener("visibilitychange", () => { if (!document.hidden) pull(); });
+window.addEventListener("focus", () => pull());
+setInterval(() => { if (!document.hidden) pull(); }, 15000);
+
+/* ---- URL欄からブックマークに追加 ---- */
+const addUrl = document.getElementById("add-url");
+const addBtn = document.getElementById("add-btn");
+const addWrap = addUrl.closest(".addurl");
+
+function normalizeUrl(raw) {
+  let v = (raw || "").trim();
+  if (!v) return null;
+  if (!/^https?:\/\//i.test(v)) v = "https://" + v;
+  try {
+    const u = new URL(v);
+    if (!u.hostname.includes(".")) return null;
+    return u.href;
+  } catch (_) { return null; }
+}
+
+async function fetchMeta(rec) {
+  setSyncState("情報を取得中…");
+  try {
+    const r = await fetch("/api/meta?u=" + encodeURIComponent(rec.u));
+    if (r.ok) {
+      const m = await r.json();
+      if (m.title) rec.t = m.title;
+      if (m.image) rec.th = m.image;
+      saveCustom(); render();
+    }
+  } catch (_) {}
+  setSyncState(syncReady ? "同期済み" : "", syncReady ? "ok" : "");
+}
+
+function addFromUrl() {
+  const url = normalizeUrl(addUrl.value);
+  if (!url) {
+    addWrap.classList.add("bad");
+    setTimeout(() => addWrap.classList.remove("bad"), 1200);
+    return;
+  }
+  /* すでに掲載済みなら、それをブックマークするだけにする */
+  const key = url.replace(/\/$/, "");
+  let hit = null;
+  for (const [d, sk, t, u] of E) if (u.replace(/\/$/, "") === key) { hit = [sk, u, t]; break; }
+  if (!hit) for (const g of U) for (const it of g.items)
+    if (it[1].replace(/\/$/, "") === key) { hit = [g.s, it[1], it[0]]; break; }
+
+  if (hit) {
+    marks.add(idOf(hit[0], hit[1], hit[2])); save();
+  } else if (!custom.some(c => c.u.replace(/\/$/, "") === key)) {
+    /* まずドメイン名で登録し、そのあとタイトルと og:image で置き換える */
+    const rec = { u: url, t: host(url), th: null, at: Date.now() };
+    custom.push(rec);
+    marks.add(idOf("manual", url));
+    saveCustom(); save();
+    addUrl.value = "";
+    activeTab = "marked";
+    updateFilterBadge(); render();
+    fetchMeta(rec);
+    return;
+  }
+  addUrl.value = "";
+  activeTab = "marked";
+  updateFilterBadge(); render();
+}
+addBtn.addEventListener("click", addFromUrl);
+addUrl.addEventListener("keydown", e => {
+  if (e.key === "Enter") { e.preventDefault(); addFromUrl(); }
+  if (e.key === "Escape") addUrl.value = "";
+});
+
+const searchBox = document.getElementById("search");
+const searchClear = document.getElementById("search-clear");
+let searchTimer = null;
+function applySearch() {
+  const v = norm(searchBox.value.trim());
+  if (v === query) return;
+  query = v;
+  searchClear.hidden = !searchBox.value;
+  updateFilterBadge(); render();
+}
+searchBox.addEventListener("input", () => {
+  searchClear.hidden = !searchBox.value;
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(applySearch, 120);
+});
+searchBox.addEventListener("keydown", e => {
+  if (e.key === "Enter") { e.preventDefault(); clearTimeout(searchTimer); applySearch(); }
+  if (e.key === "Escape") { searchBox.value = ""; clearTimeout(searchTimer); applySearch(); }
+});
+searchClear.addEventListener("click", () => {
+  searchBox.value = ""; clearTimeout(searchTimer); applySearch(); searchBox.focus();
+});
+
+document.getElementById("reset").addEventListener("click", () => {
+  activeCats.clear(); onlyMarked = false; activeTag = null; buildTagRows();
+  searchBox.value = ""; query = ""; searchClear.hidden = true;
+  onlyBtn.setAttribute("aria-pressed", "false");
+  catRow.querySelectorAll(".chip").forEach(c => c.setAttribute("aria-pressed", "false"));
+  updateFilterBadge(); render();
+});
+
+const RIBBON = '<svg viewBox="0 0 20 22" aria-hidden="true"><path class="fill" d="M4 2.8h12v17.4l-6-4.6-6 4.6z" stroke-linejoin="round"/></svg>';
+
+function entryEl(srcKey, title, url, tag, extraTag) {
+  const src = S[srcKey], cat = CATS[src.c] || { label: "", v: "var(--ink-3)" };
+  const id = idOf(srcKey, url, title);
+  const on = marks.has(id);
+  const key = srcKey + "|" + url;
+
+  const row = document.createElement("div");
+  row.className = "entry" + (on ? " marked" : "") + (seen.has(id) ? " seen" : "");
+
+  const shot = document.createElement("a");
+  shot.href = url; shot.target = "_blank"; shot.rel = "noopener noreferrer";
+  shot.tabIndex = -1; shot.setAttribute("aria-hidden", "true");
+  const th = TH[key] || thumbOf(key);
+  if (th) {
+    shot.className = "shot";
+    const im = document.createElement("img");
+    im.src = th; im.alt = ""; im.loading = "lazy"; im.decoding = "async";
+    shot.appendChild(im);
+  } else {
+    shot.className = "shot none";
+    const sp = document.createElement("span"); sp.className = "ph"; sp.textContent = "no image";
+    shot.appendChild(sp);
+  }
+  const badge = document.createElement("span");
+  badge.className = "seen-badge"; badge.textContent = "既読";
+  shot.appendChild(badge);
+  row.appendChild(shot);
+
+  const main = document.createElement("div");
+  const a = document.createElement("a");
+  a.className = "entry-title"; a.href = url; a.target = "_blank"; a.rel = "noopener noreferrer";
+  a.textContent = title;
+  main.appendChild(a);
+
+  const meta = document.createElement("div");
+  meta.className = "entry-meta";
+  meta.innerHTML =
+    '<span class="src" style="--d:' + cat.v + '"><span class="dot"></span>' + src.n + '</span>' +
+    '<span class="host">' + host(url) + '</span>' +
+    (tag ? '<span class="tag">' + tag + '</span>' : '') +
+    (extraTag ? '<span class="tag">' + extraTag + '</span>' : '');
+  main.appendChild(meta);
+
+  const by = CRD[key];
+  if (by && by.length) {
+    const cr = document.createElement("p");
+    cr.className = "credit";
+    cr.innerHTML = '<span class="credit-label">制作</span>' +
+      by.map(() => '<span class="credit-name"></span>').join('<span class="credit-sep">/</span>');
+    cr.querySelectorAll(".credit-name").forEach((el, i) => { el.textContent = by[i]; });
+    main.appendChild(cr);
+  }
+
+  const tw = document.createElement("div");
+  tw.className = "tags";
+  function paintTags() {
+    tw.textContent = "";
+    effType(key).forEach(v => tw.appendChild(tagChip("t", v)));
+    effColor(key).forEach(v => tw.appendChild(tagChip("c", v)));
+    if (isEdited(key)) {
+      const m = document.createElement("span");
+      m.className = "edited-mark"; m.textContent = "編集済";
+      tw.appendChild(m);
+    }
+    if (editMode) {
+      const eb = document.createElement("button");
+      eb.type = "button"; eb.className = "type-edit-btn";
+      eb.textContent = effType(key).length ? "タイプを変更" : "タイプを追加";
+      eb.addEventListener("click", () => toggleEditor());
+      tw.appendChild(eb);
+    }
+  }
+  let editor = null;
+  function toggleEditor() {
+    if (editor) { editor.remove(); editor = null; return; }
+    editor = document.createElement("div");
+    editor.className = "type-editor";
+    TYPES.forEach(v => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "tag-chip" + (effType(key).includes(v) ? " on" : "");
+      b.textContent = v;
+      b.addEventListener("click", () => {
+        const cur = effType(key).slice();
+        const i = cur.indexOf(v);
+        if (i >= 0) cur.splice(i, 1); else cur.push(v);
+        typeEdits[key] = cur;
+        b.classList.toggle("on", cur.includes(v));
+        paintTags(); if (editor) main.appendChild(editor);
+        applyTypeEditLight();
+      });
+      editor.appendChild(b);
+    });
+    const rb = document.createElement("button");
+    rb.type = "button"; rb.className = "chip ghost type-reset"; rb.textContent = "自動判定に戻す";
+    rb.addEventListener("click", () => {
+      delete typeEdits[key];
+      editor.querySelectorAll(".tag-chip").forEach(c => c.classList.toggle("on", effType(key).includes(c.textContent)));
+      paintTags(); if (editor) main.appendChild(editor);
+      applyTypeEditLight();
+    });
+    editor.appendChild(rb);
+    main.appendChild(editor);
+  }
+  paintTags();
+  main.appendChild(tw);
+
+  const btn = document.createElement("button");
+  btn.type = "button"; btn.className = "bm"; btn.innerHTML = RIBBON;
+  btn.setAttribute("aria-pressed", String(on));
+  btn.setAttribute("aria-label", (on ? "ブックマークを外す：" : "ブックマークする：") + title);
+  btn.title = on ? "ブックマークを外す" : "ブックマークする";
+  btn.addEventListener("click", () => {
+    marks.has(id) ? marks.delete(id) : marks.add(id);
+    save();
+    if (srcKey === "manual" && !marks.has(id)) {   /* 手動追加は外したら一覧からも消す */
+      custom = custom.filter(c => c.u !== url);
+      saveCustom(); render(); return;
+    }
+    if (activeTab === "marked") { render(); return; }
+    if (onlyMarked) { render(); return; }
+    const nowOn = marks.has(id);
+    btn.setAttribute("aria-pressed", String(nowOn));
+    btn.title = nowOn ? "ブックマークを外す" : "ブックマークする";
+    row.classList.toggle("marked", nowOn);
+    updateCounts();
+  });
+
+  const markSeen = () => {
+    if (seen.has(id)) return;
+    seen.add(id); saveSeen(); row.classList.add("seen"); updateCounts();
+  };
+  shot.addEventListener("click", markSeen);
+  a.addEventListener("click", markSeen);
+  shot.addEventListener("auxclick", e => { if (e.button === 1) markSeen(); });
+  a.addEventListener("auxclick", e => { if (e.button === 1) markSeen(); });
+
+  row.append(main, btn);
+  return row;
+}
+
+function updateCounts() {
+  document.getElementById("mark-ct").textContent = marks.size;
+  document.getElementById("fig-marked").textContent = marks.size;
+  document.getElementById("fig-seen").textContent = seen.size;
+}
+/* 全角/半角と大文字小文字の差を吸収してから照合する */
+const norm = v => (v || "").normalize("NFKC").toLowerCase();
+function haystack(srcKey, title, url) {
+  const k = srcKey + "|" + url;
+  return norm([title, url, S[srcKey].n,
+               (CRD[k] || []).join(" "),
+               effType(k).join(" "), effColor(k).join(" ")].join(" "));
+}
+const pass = (srcKey, id, url, title) => {
+  if (activeCats.size && srcKey !== "manual" && !activeCats.has(S[srcKey].c)) return false;
+  if (onlyMarked && !marks.has(id)) return false;
+  if (activeTag) {
+    const k = srcKey + "|" + url;
+    const vals = activeTag.k === "t" ? effType(k) : effColor(k);
+    if (!vals.includes(activeTag.v)) return false;
+  }
+  if (query) {
+    const h = haystack(srcKey, title, url);
+    for (const w of query.split(/\s+/)) if (w && !h.includes(w)) return false;
+  }
+  return true;
+};
+
+function render() {
+  const main = document.getElementById("main");
+  main.textContent = "";
+  updateCounts();
+
+  /* ---- 日付ごと ---- */
+  const byDate = new Map();
+  for (const [d, s, t, u, tag] of E) {
+    if (!pass(s, idOf(s, u, t), u, t)) continue;
+    if (!byDate.has(d)) byDate.set(d, []);
+    byDate.get(d).push([s, t, u, tag]);
+  }
+  let nDated = 0;
+  const secDated = document.createElement("section");
+  secDated.className = "sec";
+  for (const d of [...byDate.keys()].sort().reverse()) {
+    const list = byDate.get(d); nDated += list.length;
+    const dt = new Date(d + "T00:00:00");
+    const wd = dt.getDay();
+    const day = document.createElement("section");
+    day.className = "day" + (d === TODAY ? " is-today" : "") + (wd === 6 ? " is-sat" : wd === 0 ? " is-sun" : "");
+    const mark = document.createElement("div");
+    mark.className = "day-mark";
+    mark.innerHTML =
+      '<span class="day-num">' + String(dt.getDate()).padStart(2,"0") + '</span>' +
+      '<span class="day-sub">' + MO[dt.getMonth()] + ' ' + dt.getFullYear() + ' &middot; ' + WD[wd] + '</span>' +
+      '<span class="day-count">' + list.length + ' 件' + (d === TODAY ? ' &middot; 本日' : '') + '</span>';
+    const body = document.createElement("div");
+    body.className = "entries" + (listView ? " list" : "");
+    for (const [s, t, u, tag] of list) body.appendChild(entryEl(s, t, u, tag));
+    day.append(mark, body);
+    secDated.appendChild(day);
+  }
+
+  /* ---- 日付なし ---- */
+  let nUndated = 0;
+  const secUndated = document.createElement("section");
+  secUndated.className = "sec";
+  for (const g of U) {
+    const src = S[g.s], cat = CATS[src.c] || { label: "", v: "var(--ink-3)" };
+    const rows = g.items.filter(it => pass(g.s, idOf(g.s, it[1], it[0]), it[1], it[0]));
+    if (!rows.length) continue;
+    nUndated += rows.length;
+    const grp = document.createElement("section");
+    grp.className = "group";
+    const gh = document.createElement("div");
+    gh.className = "group-head"; gh.style.setProperty("--d", cat.v);
+    gh.innerHTML = '<span class="dot"></span>' + src.n + ' <span class="group-note">' + g.note + '</span>';
+    const body = document.createElement("div");
+    body.className = "entries" + (listView ? " list" : "");
+    for (const it of rows) body.appendChild(entryEl(g.s, it[0], it[1], it[2] || ""));
+    grp.append(gh, body);
+    secUndated.appendChild(grp);
+  }
+
+  /* ---- ブックマーク ---- */
+  let nMarked = 0;
+  const secMarked = document.createElement("section");
+  secMarked.className = "sec";
+  {
+    const body = document.createElement("div");
+    body.className = "entries" + (listView ? " list" : "");
+    /* bookmarks.txt 由来（タイトル・画像あり）→ 画面から足したURL → ギャラリー由来 */
+    for (const p of PIN) {
+      if (!pass("manual", idOf("manual", p.u, p.t), p.u, p.t)) continue;
+      body.appendChild(entryEl("manual", p.t, p.u, ""));
+      nMarked++;
+    }
+    for (const c of [...custom].reverse()) {
+      if (!pass("manual", idOf("manual", c.u, c.t), c.u, c.t)) continue;
+      body.appendChild(entryEl("manual", c.t, c.u, ""));
+      nMarked++;
+    }
+    for (const [d, sk, t, u, tag] of E) {
+      if (!marks.has(idOf(sk, u, t))) continue;
+      if (!pass(sk, idOf(sk, u, t), u, t)) continue;
+      body.appendChild(entryEl(sk, t, u, tag, d));
+      nMarked++;
+    }
+    for (const g of U) for (const it of g.items) {
+      if (!marks.has(idOf(g.s, it[1], it[0]))) continue;
+      if (!pass(g.s, idOf(g.s, it[1], it[0]), it[1], it[0])) continue;
+      body.appendChild(entryEl(g.s, it[0], it[1], it[2] || ""));
+      nMarked++;
+    }
+    secMarked.appendChild(body);
+  }
+
+  /* ---- タブ ---- */
+  const TABS = [
+    { k: "dated",   label: "Daily",     n: nDated,   note: "各ギャラリーの掲載日表記にもとづく。新しい順", sec: secDated },
+    { k: "undated", label: "Other", n: nUndated, note: "投稿日を持たないギャラリー。各サイトの掲載順のまま", sec: secUndated },
+    { k: "marked",  label: "Bookmark", n: nMarked, note: "", sec: secMarked }
+  ];
+  const bar = document.createElement("div");
+  bar.className = "tabs"; bar.setAttribute("role", "tablist");
+  TABS.forEach(t => {
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "tab"; b.id = "tab-" + t.k;
+    b.setAttribute("role", "tab");
+    b.setAttribute("aria-selected", String(activeTab === t.k));
+    b.setAttribute("aria-controls", "panel-" + t.k);
+    b.tabIndex = activeTab === t.k ? 0 : -1;
+    b.innerHTML = t.label + '<span class="tab-ct">(' + t.n + ')</span>';
+    b.addEventListener("click", () => { activeTab = t.k; render(); });
+    b.addEventListener("keydown", e => {
+      if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+      e.preventDefault();
+      activeTab = activeTab === "dated" ? "undated" : "dated";
+      render();
+      const next = document.getElementById("tab-" + activeTab);
+      if (next) next.focus();
+    });
+    bar.appendChild(b);
+  });
+  main.appendChild(bar);
+
+  const cur = TABS.find(t => t.k === activeTab) || TABS[0];
+  if (cur.note) {
+    const note = document.createElement("p");
+    note.className = "tab-note"; note.textContent = cur.note;
+    main.appendChild(note);
+  }
+
+  const panel = document.createElement("div");
+  if (!cur.note) panel.className = "tabpanel-nonote";
+  panel.id = "panel-" + cur.k;
+  panel.setAttribute("role", "tabpanel");
+  panel.setAttribute("aria-labelledby", "tab-" + cur.k);
+  if (cur.n) {
+    panel.appendChild(cur.sec);
+  } else {
+    const e = document.createElement("div");
+    e.className = "empty";
+    e.innerHTML = (onlyMarked || cur.k === "marked")
+      ? '<b>ブックマークはまだありません</b>各掲載の右にあるリボンを押すか、上のURL欄に貼り付けると、ここに集まります。'
+      : query
+        ? '<b>「' + searchBox.value + '」に一致する掲載がありません</b>別の語で検索するか、検索窓を空にしてください。'
+        : '<b>該当する掲載がありません</b>絞り込みを外すと全件が表示されます。';
+    panel.appendChild(e);
+  }
+  main.appendChild(panel);
+}
+
+if (!canStore) {
+  const w = document.createElement("p");
+  w.className = "storage-warn";
+  w.textContent = "このブラウザではローカル保存が無効なため、ブックマーク・既読・タイプ編集はページを閉じるまでの一時的なものになります。";
+  const figs = document.querySelector("#filter-panel .figures");
+  figs ? figs.before(w) : document.getElementById("filter-panel").appendChild(w);
+  document.getElementById("clear-marks").style.display = "none";
+}
+
+
+updateFilterBadge();
+render();
+</script>

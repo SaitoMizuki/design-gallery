@@ -1,0 +1,51 @@
+name: daily update
+
+on:
+  schedule:
+    - cron: "0 0 * * *"      # 00:00 UTC = 09:00 JST
+  workflow_dispatch:          # 手動実行用
+
+concurrency:
+  group: daily
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install --quiet pillow
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      # 取得済みデータを引き継ぐ（毎回ゼロから取りにいかない）
+      - name: restore cache
+        uses: actions/cache@v4
+        with:
+          path: cache
+          key: dg-cache-${{ github.run_id }}
+          restore-keys: dg-cache-
+
+      - name: 古いキャッシュを掃除
+        run: find cache -type f -mtime +45 -delete 2>/dev/null || true
+
+      - name: 取得とビルド
+        run: python build.py
+
+      - name: 関数の依存を用意
+        working-directory: deploy
+        run: npm ci --omit=dev
+
+      - name: Netlify へ公開
+        working-directory: deploy
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        run: npx -y netlify-cli@17 deploy --prod --dir . --functions netlify/functions
