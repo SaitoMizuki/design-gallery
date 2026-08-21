@@ -4,6 +4,10 @@ on:
   schedule:
     - cron: "0 0 * * *"      # 00:00 UTC = 09:00 JST
   workflow_dispatch:          # 手動実行用
+  push:                       # 修正を push したら即反映
+    branches: [main]
+    paths-ignore:
+      - "last-run.txt"        # 実行記録のコミットで再帰しないように
 
 concurrency:
   group: daily
