@@ -15,11 +15,16 @@ concurrency:
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
 
 jobs:
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    environment:
+      name: github-pages
+      url: ${{ steps.pages.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
 
@@ -27,10 +32,6 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install --quiet pillow
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "20"
 
       # 取得済みデータを引き継ぐ（毎回ゼロから取りにいかない）
       - name: restore cache
@@ -46,16 +47,23 @@ jobs:
       - name: 取得とビルド
         run: python build.py
 
-      - name: 関数の依存を用意
-        working-directory: deploy
-        run: npm ci --omit=dev
+      # 公開するのはページ本体と画像だけ。Netlify 用の設定や関数は含めない。
+      - name: 公開ファイルを揃える
+        run: |
+          rm -rf _site && mkdir -p _site
+          cp deploy/index.html _site/
+          cp deploy/og.png     _site/ 2>/dev/null || true
+          cp deploy/data.json  _site/ 2>/dev/null || true
+          cp -r deploy/th      _site/
+          touch _site/.nojekyll
+          du -sh _site; ls _site | head
 
-      - name: Netlify へ公開
-        working-directory: deploy
-        env:
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-        run: npx -y netlify-cli@17 deploy --prod --dir . --functions netlify/functions
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: pages
+        uses: actions/deploy-pages@v4
 
       # 60日間リポジトリに動きがないと GitHub がスケジュールを止めるため、
       # 実行日を1行コミットして活動を残す。

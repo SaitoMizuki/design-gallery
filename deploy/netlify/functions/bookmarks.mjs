@@ -6,13 +6,36 @@ import { getStore } from "@netlify/blobs";
    合言葉は端末をまたいで同じ内容を見るための鍵で、認証ではありません。 */
 const KEY_RE = /^[A-Za-z0-9_-]{4,64}$/;
 
+/* GitHub Pages から呼ばれるため CORS を許可する。
+   同期キーを知っている相手だけが読み書きできる設計は変わらない。 */
+const ALLOW = new Set([
+  "https://saitomizuki.github.io",
+  "https://design-gallery-3110.netlify.app",
+]);
+const cors = (req) => {
+  const o = req.headers.get("origin") || "";
+  return ALLOW.has(o)
+    ? { "access-control-allow-origin": o, "vary": "origin" }
+    : {};
+};
+
+
 export default async (req) => {
   const url = new URL(req.url);
   const key = (url.searchParams.get("k") || "").trim();
   const json = (body, status = 200) =>
     new Response(JSON.stringify(body), {
       status,
-      headers: { "content-type": "application/json", "cache-control": "no-store" },
+      headers: { "content-type": "application/json", "cache-control": "no-store",
+                 ...cors(req) },
+    });
+
+  if (req.method === "OPTIONS")
+    return new Response(null, {
+      status: 204,
+      headers: { ...cors(req), "access-control-allow-methods": "GET,POST,OPTIONS",
+                 "access-control-allow-headers": "content-type",
+                 "access-control-max-age": "86400" },
     });
 
   if (!KEY_RE.test(key))

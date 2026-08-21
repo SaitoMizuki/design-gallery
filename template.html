@@ -701,7 +701,11 @@ document.getElementById("clear-marks").addEventListener("click", () => {
    合言葉なしで、ページを開くだけで PC / スマホが同じ内容になる。
    サーバーの更新時刻が自分の最終書き込みより新しいときだけ取り込むので、
    相手が空でも自分の記録が消えない。初回だけ双方を足し合わせる。 */
-const SYNC_API = "/api/bookmarks";
+/* 同期APIは Netlify 上にある。GitHub Pages から開いたときは絶対URLで呼ぶ。
+   ページ本体は GitHub Pages（デプロイ無制限）、APIだけ Netlify という構成。 */
+const SYNC_HOST = location.hostname.endsWith("netlify.app") || location.hostname === "localhost"
+  ? "" : "https://design-gallery-3110.netlify.app";
+const SYNC_API = SYNC_HOST + "/api/bookmarks";
 const SYNC_ID  = "dg-mizuki-9f3c7a21";
 const syncState = document.getElementById("sync-state");
 let syncTimer = null, syncing = false, dirty = false, pendingPush = false;
@@ -809,7 +813,7 @@ function normalizeUrl(raw) {
 async function fetchMeta(rec) {
   setSyncState("情報を取得中…");
   try {
-    const r = await fetch("/api/meta?u=" + encodeURIComponent(rec.u));
+    const r = await fetch(SYNC_HOST + "/api/meta?u=" + encodeURIComponent(rec.u));
     if (r.ok) {
       const m = await r.json();
       if (m.title) rec.t = m.title;

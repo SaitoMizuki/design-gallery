@@ -1,0 +1,42 @@
+# ブックマーク同期の API（Netlify Functions）だけを更新する。
+# Netlify は本番デプロイ1回につき15クレジット消費し、無料枠は月300（=20回）。
+# 毎日のページ更新は GitHub Pages が担うので、こちらは関数を直したときだけ手動で流す。
+name: deploy netlify functions
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: 依存を用意
+        working-directory: deploy
+        run: npm ci --omit=dev
+
+      # 関数だけを送る。index.html などページ本体は Pages 側にあるため不要だが、
+      # Netlify 側の URL も生かしておきたいので最低限のプレースホルダを置く。
+      # 旧URLを踏んだ人が 404 にならないよう、Pages へ送るページを置く
+      - name: 転送ページを用意
+        working-directory: deploy
+        run: |
+          cat > index.html <<'HTML'
+          <!doctype html><meta charset="utf-8">
+          <title>Design gallery</title>
+          <meta http-equiv="refresh" content="0; url=https://saitomizuki.github.io/design-gallery/">
+          <link rel="canonical" href="https://saitomizuki.github.io/design-gallery/">
+          <p>移転しました。<a href="https://saitomizuki.github.io/design-gallery/">Design gallery</a></p>
+          HTML
+
+      - name: 公開
+        working-directory: deploy
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        run: npx -y netlify-cli@17 deploy --prod --dir . --functions netlify/functions

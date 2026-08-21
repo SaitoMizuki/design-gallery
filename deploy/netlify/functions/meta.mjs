@@ -28,11 +28,25 @@ const pick = (html, patterns) => {
   return null;
 };
 
+/* GitHub Pages から呼ばれるため CORS を許可する。
+   同期キーを知っている相手だけが読み書きできる設計は変わらない。 */
+const ALLOW = new Set([
+  "https://saitomizuki.github.io",
+  "https://design-gallery-3110.netlify.app",
+]);
+const cors = (req) => {
+  const o = req.headers.get("origin") || "";
+  return ALLOW.has(o)
+    ? { "access-control-allow-origin": o, "vary": "origin" }
+    : {};
+};
+
 export default async (req) => {
   const json = (b, s = 200) =>
     new Response(JSON.stringify(b), {
       status: s,
-      headers: { "content-type": "application/json", "cache-control": "no-store" },
+      headers: { "content-type": "application/json", "cache-control": "no-store",
+                 ...cors(req) },
     });
 
   const raw = (new URL(req.url).searchParams.get("u") || "").trim();
