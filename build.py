@@ -89,21 +89,34 @@ def get(name, url, force=False):
         return open(p, encoding="utf-8", errors="replace").read()
     if os.path.exists(p) and not force and NOFETCH:
         return open(p, encoding="utf-8", errors="replace").read()
-    try:
-        r = subprocess.run(["curl", "-sL", "-A", UA, *CURL_HDRS, "--max-time", "40",
-                            "-w", "\n<<<HTTP:%{http_code}>>>", url],
-                           capture_output=True, timeout=60)
-        body = r.stdout.decode("utf-8", "replace")
-        code = "?"
-        m = re.search(r"\n<<<HTTP:(\d+)>>>$", body)
-        if m:
-            code, body = m.group(1), body[:m.start()]
-        if len(body) > 200:
-            open(p, "w", encoding="utf-8").write(body)
-            return body
-        log(f"  ! 取得失敗 HTTP {code} / {len(body)}B  {url}")
-    except Exception as e:
-        log("  ! fetch failed", url, e)
+    # url を空で呼ぶのは「取得済みキャッシュだけ読む」用途（creators など）
+    if not url:
+        return open(p, encoding="utf-8", errors="replace").read() if os.path.exists(p) else ""
+    # 接続方式を変えながら試す。HTTP/2 の握手を拒否するサイトがあるため。
+    attempts = (
+        ([], 40),
+        (["--http1.1", "--retry", "2", "--retry-all-errors", "--retry-delay", "3"], 60),
+        (["--http1.1", "--tlsv1.2", "--ipv4"], 60),
+    )
+    for i, (extra, tmo) in enumerate(attempts, 1):
+        try:
+            r = subprocess.run(["curl", "-sS", "-L", "-A", UA, *CURL_HDRS, *extra,
+                                "--max-time", str(tmo),
+                                "-w", "\n<<<HTTP:%{http_code}>>>", url],
+                               capture_output=True, timeout=tmo + 30)
+            body = r.stdout.decode("utf-8", "replace")
+            code = "?"
+            m = re.search(r"\n<<<HTTP:(\d+)>>>$", body)
+            if m:
+                code, body = m.group(1), body[:m.start()]
+            if len(body) > 200:
+                if i > 1: log(f"  ~ {i}回目で成功 {url}")
+                open(p, "w", encoding="utf-8").write(body)
+                return body
+            err = r.stderr.decode("utf-8", "replace").strip().replace("\n", " ")[:160]
+            log(f"  ! 取得失敗({i}) HTTP {code} / {len(body)}B / curl rc={r.returncode} {err}  {url}")
+        except Exception as e:
+            log(f"  ! 取得失敗({i}) {type(e).__name__} {e}  {url}")
     return open(p, encoding="utf-8", errors="replace").read() if os.path.exists(p) else ""
 
 def cl(x):  return re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", "", str(x)))).strip()
