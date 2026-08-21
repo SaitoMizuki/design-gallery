@@ -9,7 +9,7 @@
 import os, re, sys, json, html, base64, struct, hashlib, subprocess, colorsys, datetime, shutil
 from collections import Counter, defaultdict
 from concurrent.futures import ThreadPoolExecutor
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlparse
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 CACHE, DIST = os.path.join(ROOT, "cache"), os.path.join(ROOT, "dist")
@@ -70,6 +70,9 @@ HI = TODAY.isoformat()
 
 def log(*a): print(*a, flush=True)
 
+# 一度も応答しなかったホスト。同じ実行内で二度と待たない。
+DEAD_HOSTS = set()
+
 # ブラウザ相当のヘッダ。データセンターIPからの素の curl を弾くサイトへの対策。
 CURL_HDRS = [
     "-H", "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
@@ -92,11 +95,16 @@ def get(name, url, force=False):
     # url を空で呼ぶのは「取得済みキャッシュだけ読む」用途（creators など）
     if not url:
         return open(p, encoding="utf-8", errors="replace").read() if os.path.exists(p) else ""
+    host = urlparse(url).netloc
+    if host in DEAD_HOSTS:
+        log(f"  - {host} は接続不能のためスキップ  {url}")
+        return open(p, encoding="utf-8", errors="replace").read() if os.path.exists(p) else ""
+
     # 接続方式を変えながら試す。HTTP/2 の握手を拒否するサイトがあるため。
     attempts = (
         ([], 40),
-        (["--http1.1", "--retry", "2", "--retry-all-errors", "--retry-delay", "3"], 60),
-        (["--http1.1", "--tlsv1.2", "--ipv4"], 60),
+        (["--http1.1", "--retry", "1", "--retry-all-errors", "--retry-delay", "2"], 30),
+        (["--http1.1", "--tlsv1.2", "--ipv4"], 30),
     )
     for i, (extra, tmo) in enumerate(attempts, 1):
         try:
@@ -117,6 +125,8 @@ def get(name, url, force=False):
             log(f"  ! 取得失敗({i}) HTTP {code} / {len(body)}B / curl rc={r.returncode} {err}  {url}")
         except Exception as e:
             log(f"  ! 取得失敗({i}) {type(e).__name__} {e}  {url}")
+    # 全方式で応答が無かった。以降このホストへは接続を試みない。
+    DEAD_HOSTS.add(host)
     return open(p, encoding="utf-8", errors="replace").read() if os.path.exists(p) else ""
 
 def cl(x):  return re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", "", str(x)))).strip()
