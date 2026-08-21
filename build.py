@@ -61,7 +61,10 @@ def img_bmp24(src, dst, n=24):
 UA = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
       "(KHTML, like Gecko) Chrome/126.0 Safari/537.36")
 NOFETCH = "--no-fetch" in sys.argv
-TODAY = datetime.date.today()
+# 実行環境のタイムゾーンに依存させない（GitHub Actions のランナーは UTC）
+JST = datetime.timezone(datetime.timedelta(hours=9))
+def now_jst(): return datetime.datetime.now(JST)
+TODAY = now_jst().date()
 LO = (TODAY - datetime.timedelta(days=31)).isoformat()
 HI = TODAY.isoformat()
 
@@ -230,7 +233,7 @@ def collect():
             try: d = json.loads(html.unescape(m.group(1)))
             except Exception: continue
             if not d.get("createdAt"): continue
-            iso = datetime.datetime.utcfromtimestamp(d["createdAt"]).strftime("%Y-%m-%d")
+            iso = datetime.datetime.fromtimestamp(d["createdAt"], datetime.timezone.utc).strftime("%Y-%m-%d")
             ext = re.search(r'class="figure-rollover__bt"\s*href="(https?://[^"]+)"', b)
             img = d.get("collectableImage")
             add(iso, "awwwards", d.get("collectableTitle") or "",
@@ -577,7 +580,7 @@ def main():
     out = (tpl.replace("__TH__", J(TH)).replace("__CRD__", J(CRD)).replace("__TAG__", J(TAG))
               .replace("__S__", J(S)).replace("__E__", J(rows)).replace("__U__", J(UNDATED)).replace("__PIN__", J(PIN))
               .replace("__TODAY__", HI)
-              .replace("__BUILT__", datetime.datetime.now().strftime("%Y-%m-%d %H:%M")))
+              .replace("__BUILT__", now_jst().strftime("%Y-%m-%d %H:%M")))
     p = os.path.join(DIST, "index.html")
     open(p, "w", encoding="utf-8").write(out)
 
