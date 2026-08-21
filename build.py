@@ -70,6 +70,18 @@ HI = TODAY.isoformat()
 
 def log(*a): print(*a, flush=True)
 
+# ブラウザ相当のヘッダ。データセンターIPからの素の curl を弾くサイトへの対策。
+CURL_HDRS = [
+    "-H", "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "-H", "Accept-Language: ja,en-US;q=0.9,en;q=0.8",
+    "-H", "Upgrade-Insecure-Requests: 1",
+    "-H", "Sec-Fetch-Dest: document",
+    "-H", "Sec-Fetch-Mode: navigate",
+    "-H", "Sec-Fetch-Site: none",
+    "-H", "Sec-Fetch-User: ?1",
+    "--compressed",
+]
+
 def get(name, url, force=False):
     """URLを取得して cache/<name> に保存。失敗時はキャッシュを使う。"""
     p = os.path.join(CACHE, name)
@@ -78,12 +90,18 @@ def get(name, url, force=False):
     if os.path.exists(p) and not force and NOFETCH:
         return open(p, encoding="utf-8", errors="replace").read()
     try:
-        r = subprocess.run(["curl", "-sL", "-A", UA, "--max-time", "40", url],
+        r = subprocess.run(["curl", "-sL", "-A", UA, *CURL_HDRS, "--max-time", "40",
+                            "-w", "\n<<<HTTP:%{http_code}>>>", url],
                            capture_output=True, timeout=60)
         body = r.stdout.decode("utf-8", "replace")
+        code = "?"
+        m = re.search(r"\n<<<HTTP:(\d+)>>>$", body)
+        if m:
+            code, body = m.group(1), body[:m.start()]
         if len(body) > 200:
             open(p, "w", encoding="utf-8").write(body)
             return body
+        log(f"  ! 取得失敗 HTTP {code} / {len(body)}B  {url}")
     except Exception as e:
         log("  ! fetch failed", url, e)
     return open(p, encoding="utf-8", errors="replace").read() if os.path.exists(p) else ""
@@ -627,6 +645,13 @@ def main():
     log(f"  掲載 {len(rows)} 件 / {len(ds)} 日 ({ds[0]}〜{ds[-1]})")
     log(f"  サムネイル {len(TH)} / 制作者 {len(CRD)} / タグ {len(TAG)}")
     log("  内訳: " + ", ".join(f"{S[s]['n']} {n}" for s, n in Counter(r[1] for r in rows).most_common()))
+
+    # 1件も取れなかったギャラリーを目立たせる（サイト構造の変更や遮断の検知）
+    got = Counter(r[1] for r in rows)
+    undated_src = {u["s"] for u in UNDATED}
+    dead = [S[k]["n"] for k in S if k not in got and k not in undated_src]
+    if dead:
+        log("  !! 取得0件: " + ", ".join(dead))
 
 if __name__ == "__main__":
     main()
