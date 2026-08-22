@@ -280,7 +280,9 @@
 
   @media (max-width:720px){
     body{font-size:14.5px}
-    .wrap{padding:0 16px 72px; overflow-x:hidden}
+    /* overflow-x:hidden は overflow-y も auto にしてスクロールコンテナを作り、
+       中の position:sticky を無効化する。clip なら横のはみ出しだけを断てる。 */
+    .wrap{padding:0 16px 72px; overflow-x:clip}
     .masthead{padding:32px 0 18px}
     .masthead h1{padding-right:48px}
     .theme-toggle{top:28px}
@@ -288,9 +290,15 @@
     .figures{gap:2px 18px; font-size:11px}
     .figures b{font-size:13px}
 
-    .day{grid-template-columns:1fr; gap:0; padding:20px 0 4px}
-    .day-mark{position:static; display:flex; align-items:baseline; gap:10px; margin-bottom:10px;
-      padding-bottom:8px; border-bottom:1px solid var(--rule-2)}
+    .day{grid-template-columns:1fr; gap:0; padding:20px 0 18px}
+    /* スクロール中も日付を見失わないよう、ツールバーの下に貼り付ける。
+       ツールバーの高さは絞り込みの開閉で変わるので JS で実測して渡す。
+       box-shadow で背景を10px下へ伸ばし、罫線と記事の隙間から
+       スクロール中の記事が覗かないようにしている。 */
+    .day-mark{position:sticky; top:var(--toolbar-h,150px); z-index:6;
+      display:flex; align-items:baseline; gap:10px; margin-bottom:10px;
+      padding-top:8px; padding-bottom:8px; border-bottom:1px solid var(--rule-2);
+      background:var(--bg); box-shadow:0 10px 0 var(--bg)}
     .day-num{font-size:28px}
     .day-sub,.day-count{margin-top:0}
 
@@ -312,10 +320,14 @@
        padding-bottom はフェード幅と同じにして、最後まで送ったとき中身が隠れないようにする。 */
     #filter-panel{
       max-height:58vh; overflow-y:auto; overscroll-behavior:contain;
-      padding-top:20px; padding-right:2px; padding-bottom:56px;
+      padding-top:26px; padding-right:2px; padding-bottom:56px;
       -webkit-overflow-scrolling:touch;
-      -webkit-mask-image:linear-gradient(to bottom, #000 calc(100% - 56px), transparent);
-      mask-image:linear-gradient(to bottom, #000 calc(100% - 56px), transparent);
+      /* 上端は URL 欄の下に隙間を作ったうえで、そこへ潜り込む中身をフェードさせる。
+         下端は「まだ続きがある」ことを示すフェード。 */
+      -webkit-mask-image:linear-gradient(to bottom, transparent 0, #000 32px,
+                                         #000 calc(100% - 56px), transparent 100%);
+      mask-image:linear-gradient(to bottom, transparent 0, #000 32px,
+                                 #000 calc(100% - 56px), transparent 100%);
     }
     :root{--ctl-h:40px}
     .filter-toggle{padding:0 16px; font-size:13px}
@@ -432,6 +444,21 @@
   l.setAttribute("type", "image/svg+xml");
   l.setAttribute("href", href);
   (document.head || document.documentElement).appendChild(l);
+})();
+
+/* 日付の貼り付け位置。ツールバーの高さは絞り込みの開閉や折り返しで
+   変わるため、実測して CSS 変数に流す。 */
+(function trackToolbarHeight() {
+  const bar = document.querySelector(".toolbar");
+  if (!bar) return;
+  const apply = () => {
+    const h = Math.round(bar.getBoundingClientRect().height);
+    if (h > 0) document.documentElement.style.setProperty("--toolbar-h", h + "px");
+  };
+  apply();
+  if (window.ResizeObserver) new ResizeObserver(apply).observe(bar);
+  window.addEventListener("resize", apply);
+  window.addEventListener("orientationchange", apply);
 })();
 
 (function ensureViewport() {
