@@ -2,7 +2,10 @@ name: daily update
 
 on:
   schedule:
-    - cron: "0 0 * * *"      # 00:00 UTC = 09:00 JST
+    # GitHub の cron は毎時00分に実行が集中して大幅に遅れる。分をずらし、
+    # さらに保険としてもう1本置く（2本目は当日分が済んでいれば即終了する）。
+    - cron: "23 0 * * *"     # 00:23 UTC = 09:23 JST
+    - cron: "47 1 * * *"     # 01:47 UTC = 10:47 JST（取りこぼし用）
   workflow_dispatch:          # 手動実行用
   push:                       # 修正を push したら即反映
     branches: [main]
@@ -28,13 +31,29 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # 2本目の cron 用。当日分が済んでいれば以降を全て飛ばす。
+      - name: 本日分が済んでいるか
+        id: done
+        run: |
+          if [ "${{ github.event_name }}" = "schedule" ] \
+             && [ -f last-run.txt ] \
+             && [ "$(cut -c1-10 last-run.txt)" = "$(date -u +%F)" ]; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "本日分は実行済み（$(cat last-run.txt)）。処理を飛ばします。"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - uses: actions/setup-python@v5
+        if: steps.done.outputs.skip != 'true' 
         with:
           python-version: "3.12"
       - run: pip install --quiet pillow
+        if: steps.done.outputs.skip != 'true'
 
       # 取得済みデータを引き継ぐ（毎回ゼロから取りにいかない）
       - name: restore cache
+        if: steps.done.outputs.skip != 'true'
         uses: actions/cache@v4
         with:
           path: cache
@@ -42,13 +61,16 @@ jobs:
           restore-keys: dg-cache-
 
       - name: 古いキャッシュを掃除
+        if: steps.done.outputs.skip != 'true'
         run: find cache -type f -mtime +45 -delete 2>/dev/null || true
 
       - name: 取得とビルド
+        if: steps.done.outputs.skip != 'true'
         run: python build.py
 
       # 公開するのはページ本体と画像だけ。Netlify 用の設定や関数は含めない。
       - name: 公開ファイルを揃える
+        if: steps.done.outputs.skip != 'true'
         run: |
           rm -rf _site && mkdir -p _site
           cp deploy/index.html _site/
@@ -59,15 +81,19 @@ jobs:
           du -sh _site; ls _site | head
 
       - uses: actions/configure-pages@v5
+        if: steps.done.outputs.skip != 'true'
       - uses: actions/upload-pages-artifact@v3
+        if: steps.done.outputs.skip != 'true'
         with:
           path: _site
       - id: pages
+        if: steps.done.outputs.skip != 'true'
         uses: actions/deploy-pages@v4
 
       # 60日間リポジトリに動きがないと GitHub がスケジュールを止めるため、
       # 実行日を1行コミットして活動を残す。
       - name: 実行記録
+        if: steps.done.outputs.skip != 'true'
         run: |
           date -u +"%Y-%m-%dT%H:%M:%SZ" > last-run.txt
           git config user.name  "github-actions[bot]"
