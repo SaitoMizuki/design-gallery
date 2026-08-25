@@ -209,8 +209,8 @@
   .tag-chip.on{background:var(--ink); color:var(--bg); border-color:var(--ink)}
   .sw{width:8px; height:8px; border-radius:2px; flex:0 0 auto; background:var(--sw);
     box-shadow:inset 0 0 0 1px rgba(128,128,128,.45)}
-  #type-row, #color-row{align-items:flex-start}
-  #type-row .tag-chip, #color-row .tag-chip{font-size:10.5px; padding:5px 8px; border:1px solid var(--rule-2)}
+  #type-row, #color-row, #credit-row{align-items:flex-start}
+  #type-row .tag-chip, #color-row .tag-chip, #credit-row .tag-chip{font-size:10.5px; padding:5px 8px; border:1px solid var(--rule-2)}
   .type-edit-btn{font:inherit; font-family:var(--mono); font-size:9.5px; line-height:1; letter-spacing:.03em;
     padding:3px 7px; border-radius:3px; cursor:pointer; background:transparent; color:var(--accent);
     border:1px dashed var(--accent)}
@@ -338,7 +338,7 @@
     .toolbar-row{gap:6px}
     .toolbar-row + .toolbar-row{margin-top:14px}
     .chip{padding:9px 12px; font-size:12.5px}
-    #type-row .tag-chip, #color-row .tag-chip{padding:8px 10px; font-size:11px}
+    #type-row .tag-chip, #color-row .tag-chip, #credit-row .tag-chip{padding:8px 10px; font-size:11px}
     .tool-label{width:100%; margin:0 0 2px}
 
     .tabs{gap:18px; margin-top:18px}
@@ -398,6 +398,7 @@
       <div class="toolbar-row" id="cat-row"><span class="tool-label">絞り込み</span></div>
       <div class="toolbar-row" id="type-row"><span class="tool-label">タイプ</span></div>
       <div class="toolbar-row" id="color-row"><span class="tool-label">色・配色</span></div>
+      <div class="toolbar-row" id="credit-row"><span class="tool-label">制作者</span></div>
       <div class="toolbar-row">
         <span class="tool-label">表示</span>
         <button class="chip mark-toggle" id="only-marked" aria-pressed="false" type="button">
@@ -587,12 +588,13 @@ const effType  = k => (typeEdits[k] !== undefined ? typeEdits[k] : ((TAG[k] || {
 const effColor = k => (TAG[k] || {}).c || [];
 const isEdited = k => typeEdits[k] !== undefined;
 
-let FREQ = { t: {}, c: {} };
+let FREQ = { t: {}, c: {}, r: {} };
 function computeFreq() {
-  FREQ = { t: {}, c: {} };
+  FREQ = { t: {}, c: {}, r: {} };
   for (const k of ALL_KEYS) {
     for (const v of effType(k))  FREQ.t[v] = (FREQ.t[v] || 0) + 1;
     for (const v of effColor(k)) FREQ.c[v] = (FREQ.c[v] || 0) + 1;
+    for (const v of (CRD[k] || [])) FREQ.r[v] = (FREQ.r[v] || 0) + 1;
   }
   let n = 0;
   for (const k of ALL_KEYS) if (effType(k).length || effColor(k).length) n++;
@@ -618,11 +620,36 @@ function tagChip(kind, v, withCount) {
 }
 function setTag(t) { activeTag = t; buildTagRows(); updateFilterBadge(); render(); }
 function applyTypeEditLight() { saveTypes(); computeFreq(); buildTagRows(); if (activeTag) render(); }
+/* 制作者は数百件あり、全部並べると絞り込みが読めなくなる。
+   既定は複数掲載のある制作者だけを出し、必要なら全件へ展開する。
+   1件だけの制作者は検索窓から名前で辿れる。 */
+let creditAll = false;
+function creditList() {
+  const all = ORDER("r");
+  if (creditAll) return all;
+  const few = all.filter(([v, n]) => n >= 2);
+  // 選択中のものが隠れないように必ず含める
+  if (activeTag && activeTag.k === "r" && !few.some(([v]) => v === activeTag.v)) {
+    const hit = all.find(([v]) => v === activeTag.v);
+    if (hit) few.push(hit);
+  }
+  return few;
+}
 function buildTagRows() {
-  [["t","type-row"],["c","color-row"]].forEach(([kind,id]) => {
+  [["t","type-row"],["c","color-row"],["r","credit-row"]].forEach(([kind,id]) => {
     const row = document.getElementById(id);
-    row.querySelectorAll(".tag-chip, .tag-clear").forEach(e => e.remove());
-    ORDER(kind).forEach(([v]) => row.appendChild(tagChip(kind, v, true)));
+    row.querySelectorAll(".tag-chip, .tag-clear, .tag-more").forEach(e => e.remove());
+    (kind === "r" ? creditList() : ORDER(kind)).forEach(([v]) => row.appendChild(tagChip(kind, v, true)));
+    if (kind === "r") {
+      const total = ORDER("r").length, shown = creditList().length;
+      if (total > shown || creditAll) {
+        const m = document.createElement("button");
+        m.type = "button"; m.className = "chip ghost tag-more";
+        m.textContent = creditAll ? "上位のみ表示" : "すべて表示 " + total;
+        m.addEventListener("click", () => { creditAll = !creditAll; buildTagRows(); });
+        row.appendChild(m);
+      }
+    }
     if (activeTag && activeTag.k === kind) {
       const c = document.createElement("button");
       c.type = "button"; c.className = "chip ghost tag-clear"; c.textContent = "解除";
@@ -1081,7 +1108,9 @@ const pass = (srcKey, id, url, title) => {
   if (onlyMarked && !marks.has(id)) return false;
   if (activeTag) {
     const k = srcKey + "|" + url;
-    const vals = activeTag.k === "t" ? effType(k) : effColor(k);
+    const vals = activeTag.k === "t" ? effType(k)
+               : activeTag.k === "r" ? (CRD[k] || [])
+               : effColor(k);
     if (!vals.includes(activeTag.v)) return false;
   }
   if (query) {
