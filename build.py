@@ -155,6 +155,7 @@ S = {
  "muuuuu":     {"n":"MUUUUU.ORG",        "c":"jp",    "home":"https://muuuuu.org/"},
  "io3000":     {"n":"I/O 3000",          "c":"jp",    "home":"https://io3000.com/"},
  "g1uu":       {"n":"1GUU",              "c":"jp",    "home":"https://1guu.jp/"},
+ "uragawa":    {"n":"URAGAWA",           "c":"jp",    "home":"https://mirai-works.co.jp/uragawa/"},
  "choodoi":    {"n":"ちょうどいいデザイン","c":"jp",   "home":"https://choooodoii.com/"},
  "dnk":        {"n":"デザインのこと",     "c":"jp",    "home":"https://designnokoto.com/"},
  "w81":        {"n":"81-web.com",        "c":"jp",    "home":"https://81-web.com/"},
@@ -264,6 +265,42 @@ def collect():
             add(sd, "fwa", it.get("title") or "", "https://thefwa.com/cases/" + it["slug"], badge,
                 thumb=("https://thefwa.com" + path.replace("\\/", "/")) if path else None,
                 credit=[p.get("name") for p in (it.get("profiles") or [])], types=cats)
+    # URAGAWA（WordPress REST API。制作会社が taxonomy で取れる）
+    ur = []
+    for pg in (1, 2):
+        raw = get(f"uragawa_{pg}.json",
+                  "https://mirai-works.co.jp/uragawa/wp-json/wp/v2/posts"
+                  f"?per_page=50&page={pg}&_embed=1")
+        try: items = json.loads(raw)
+        except Exception: break
+        if not isinstance(items, list) or not items: break
+        for it in items:
+            d = (it.get("date") or "")[:10]
+            if not (LO <= d <= HI): continue      # 期間外は詳細を取りにいかない
+            ur.append(it)
+    def ur_url(it):
+        """記事ページから掲載サイト本体のURLを拾う。class="__url link" が目印。"""
+        h = get("ur_" + str(it.get("id")) + ".html", it.get("link") or "")
+        m = re.search(r'<a[^>]*class="__url link"[^>]*href="(https?://[^"]+)"', h) or \
+            re.search(r'<a[^>]*href="(https?://[^"]+)"[^>]*class="__url link"', h)
+        return m.group(1) if m else None
+    if ur:
+        with ThreadPoolExecutor(max_workers=6) as ex:
+            urls = list(ex.map(ur_url, ur))
+        for it, u in zip(ur, urls):
+            emb = it.get("_embedded") or {}
+            img = None
+            fm = emb.get("wp:featuredmedia") or []
+            if fm and isinstance(fm[0], dict): img = fm[0].get("source_url")
+            comp, cats = [], []
+            for grp in emb.get("wp:term") or []:
+                for t in grp or []:
+                    if t.get("taxonomy") == "company": comp.append(t.get("name"))
+                    elif t.get("taxonomy") == "category": cats.append(t.get("name"))
+            add((it.get("date") or "")[:10], "uragawa",
+                html.unescape((it.get("title") or {}).get("rendered") or ""),
+                u or it.get("link"), thumb=img, credit=comp, types=cats)
+
     # Awwwards（Site of the Day のみ）
     for pg in (1, 2, 3, 4):
         h = get(f"aww_{pg}.html", f"https://www.awwwards.com/websites/?page={pg}")
