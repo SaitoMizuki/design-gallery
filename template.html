@@ -691,11 +691,14 @@ function syncTheme() {
 /* 端末で既定を分ける: PC はライト、スマホ・タブレットはダーク。
    テーマボタンで一度でも切り替えたら、その選択が以降は優先される。 */
 function deviceDefaultTheme() {
+  /* 判定にウィンドウ幅は使わない。PC でウィンドウを狭めただけで
+     スマホ扱いになり、ダークで固定されてしまうため。
+     指で触る端末かどうかだけを見る。 */
   const ua = navigator.userAgent || "";
-  const mobile = /Android|iPhone|iPad|iPod|Mobile|Silk|Kindle/i.test(ua)
-    || (matchMedia("(pointer: coarse)").matches && matchMedia("(max-width: 1024px)").matches)
-    || matchMedia("(max-width: 720px)").matches;
-  return mobile ? "dark" : "light";
+  const uaMobile = /Android|iPhone|iPad|iPod|Mobile|Silk|Kindle/i.test(ua);
+  const touch = matchMedia("(pointer: coarse)").matches
+             && matchMedia("(hover: none)").matches;
+  return (uaMobile || touch) ? "dark" : "light";
 }
 let savedTheme = null;
 try { savedTheme = localStorage.getItem(KEY + ".theme"); } catch (_) {}

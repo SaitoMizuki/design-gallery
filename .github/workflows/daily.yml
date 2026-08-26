@@ -33,12 +33,14 @@ jobs:
       - uses: actions/checkout@v4
 
       # 2本目の cron 用。当日分が済んでいれば以降を全て飛ばす。
+      # 判定は必ず JST。実行は UTC の22〜23時台＝JST の翌朝であり、
+      # UTC 日付で見ると「同じ日に既に走った」と誤判定して丸ごと飛ばしてしまう。
       - name: 本日分が済んでいるか
         id: done
         run: |
           if [ "${{ github.event_name }}" = "schedule" ] \
              && [ -f last-run.txt ] \
-             && [ "$(cut -c1-10 last-run.txt)" = "$(date -u +%F)" ]; then
+             && [ "$(cut -c1-10 last-run.txt)" = "$(TZ=Asia/Tokyo date +%F)" ]; then
             echo "skip=true" >> "$GITHUB_OUTPUT"
             echo "本日分は実行済み（$(cat last-run.txt)）。処理を飛ばします。"
           else
@@ -96,7 +98,7 @@ jobs:
       - name: 実行記録
         if: steps.done.outputs.skip != 'true'
         run: |
-          date -u +"%Y-%m-%dT%H:%M:%SZ" > last-run.txt
+          TZ=Asia/Tokyo date +"%Y-%m-%dT%H:%M:%S%z" > last-run.txt
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add last-run.txt
