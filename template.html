@@ -700,14 +700,21 @@ function deviceDefaultTheme() {
              && matchMedia("(hover: none)").matches;
   return (uaMobile || touch) ? "dark" : "light";
 }
+/* 保存先を .theme2 に変えてある。旧 .theme には、ウィンドウ幅で
+   スマホと誤判定していた頃に付いたダークが残っている端末があり、
+   それを引きずると PC でもダークのままになるため一度だけ捨てる。 */
+const THEME_KEY = KEY + ".theme2";
 let savedTheme = null;
-try { savedTheme = localStorage.getItem(KEY + ".theme"); } catch (_) {}
+try {
+  savedTheme = localStorage.getItem(THEME_KEY);
+  localStorage.removeItem(KEY + ".theme");
+} catch (_) {}
 document.documentElement.setAttribute("data-theme",
   (savedTheme === "dark" || savedTheme === "light") ? savedTheme : deviceDefaultTheme());
 themeBtn.addEventListener("click", () => {
   const next = currentTheme() === "dark" ? "light" : "dark";
   document.documentElement.setAttribute("data-theme", next);
-  if (canStore) { try { localStorage.setItem(KEY + ".theme", next); } catch (_) {} }
+  if (canStore) { try { localStorage.setItem(THEME_KEY, next); } catch (_) {} }
   syncTheme();
 });
 mqDark.addEventListener("change", () => { if (!document.documentElement.hasAttribute("data-theme")) syncTheme(); });
