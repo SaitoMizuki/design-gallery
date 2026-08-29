@@ -221,6 +221,8 @@ def collect():
         ext = re.search(r'<a href="(https?://(?!muuuuu\.org)[^"]+)"\s+class="c-post-list__link"', b)
         ttl = re.search(r'class="c-post-list__title-link[^"]*"><span[^>]*>(.*?)</span>', b, re.S)
         im  = re.search(r"<img\b[^>]*>", b)
+        # 制作者はこの一覧に含まれている。https://muuuuu.org/credit（制作会社別）
+        # を巡回しても、ここに credit が無い掲載は向こうにも載っていないため増えない。
         cred = re.search(r'<div class="c-post-list__credit">(.*?)</div>\s*</li>', b, re.S)
         names = re.findall(r'<span\s+class="c-linelink__txt">(.*?)</span>', cred.group(1), re.S) if cred else []
         if tm and ext and ttl:
